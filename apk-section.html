@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APK Downloads - Eclipsia Techs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            900: '#050505',
+                            800: '#0a0a0a',
+                            700: '#121212',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'gradient-y': 'gradient-y 15s ease infinite',
+                        'gradient-xy': 'gradient-xy 15s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'gradient-y': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'center top'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'center center'
+                            }
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'gradient-xy': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': '0% 0%'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': '100% 100%'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- Premium Scrollbar Design --- */
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, 
+                rgba(5, 5, 5, 0.8) 0%, 
+                rgba(15, 23, 42, 0.6) 50%, 
+                rgba(5, 5, 5, 0.8) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, 
+                #38bdf8, 
+                #818cf8, 
+                #c084fc, 
+                #f472b6, 
+                #38bdf8);
+            background-size: 400% 400%;
+            border-radius: 10px;
+            border: 2px solid rgba(5, 5, 5, 0.8);
+            box-shadow: 
+                0 0 10px rgba(56, 189, 248, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+            animation: gradient-xy 3s ease infinite;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, 
+                #60a5fa, 
+                #a78bfa, 
+                #d8b4fe, 
+                #f9a8d4, 
+                #60a5fa);
+            background-size: 400% 400%;
+            box-shadow: 
+                0 0 15px rgba(56, 189, 248, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.2);
+            animation: gradient-xy 2s ease infinite;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #38bdf8 #050505;
+        }
+
+        /* --- Moving Background Effect --- */
+        .moving-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(240, 171, 252, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, rgba(52, 211, 153, 0.1) 0%, transparent 50%);
+            animation: gradient-xy 20s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        .moving-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, 
+                    transparent 30%, 
+                    rgba(56, 189, 248, 0.05) 50%, 
+                    transparent 70%);
+            animation: gradient-x 25s linear infinite;
+        }
+
+        /* --- Glassmorphism Card --- */
+        .glass-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 20px rgba(56, 189, 248, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        /* --- Back Button Style --- */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* --- Text Gradients --- */
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: gradient-flow 5s ease infinite;
+        }
+        
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Button Glow --- */
+        .glow-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .glow-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, transparent 60%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .glow-btn:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* --- Service Card Styles --- */
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .service-description {
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .service-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .service-features span {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        /* --- Product Image --- */
+        .product-image {
+            width: 600px;
+            height: 350px;
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(139, 92, 246, 0.1));
+        }
+
+        .product-img {
+             width: 600px;
+            height: 350px;
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(139, 92, 246, 0.1));
+        }
+
+        .glass-card:hover .product-image {
+            border-color: rgba(56, 189, 248, 0.6);
+            transform: scale(1);
+            box-shadow: 0 12px 35px rgba(56, 189, 248, 0.4);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(139, 92, 246, 0.15));
+        }
+
+        .glass-card:hover .product-img {
+            transform: scale(1.1);
+        }
+
+        /* --- APK Download Button --- */
+        .apk-download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(45deg, #38bdf8, #8b5cf6);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .apk-download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .apk-download-btn:hover::before {
+            left: 100%;
+        }
+
+        .apk-download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        /* APK Pulse Animation */
+        @keyframes apk-pulse {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); 
+            }
+            50% { 
+                box-shadow: 0 0 30px 10px rgba(56, 189, 248, 0.3); 
+            }
+        }
+
+        .apk-pulse {
+            animation: apk-pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Moving Gradient Background -->
+    <div class="moving-bg"></div>
+
+    <!-- Three.js Background Canvas -->
+    <div id="canvas-container" class="fixed inset-0 -z-10 pointer-events-none opacity-40"></div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-dark-900/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-xl font-bold tracking-tighter text-white hover:text-brand-400 transition-colors">ECLIPSIA<span class="text-brand-400">.</span></a>
+                </div>
+                
+                <!-- Back Button - Fixed to be fully visible -->
+                <a href="main.html#tools" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Tools</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- APK Section Content -->
+    <section class="py-20 px-4 pt-32">
+        <div class="max-w-7xl mx-auto">
+            <!-- Hero Section -->
+            <div class="text-center mb-16">
+                <div class="relative inline-block mb-8">
+                    <i class="fas fa-download text-6xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400 apk-pulse"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
+                        APK DOWNLOADS
+                    </span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Access our premium collection of modified mobile applications through secure, verified APK downloads.
+                </p>
+            </div>
+
+            <!-- APK Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <!-- APK Item 1 -->
+                <div id="multi-app" class="glass-card p-8 group">
+                    <!-- Big Logo Image -->
+                    <div class="flex justify-center mb-6">
+                        <div class="product-image">
+                            <img src="images/multiapp.png" alt="Multi App" class="product-img" onerror="this.src='https://via.placeholder.com/180x240/1e293b/60a5fa?text=Multi+App'">
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <h3 class="service-title text-2xl">Multi App MOD</h3>
+                        <div class="text-sm text-gray-400 mt-2">
+                            Version 2.5.14 [Latest] | 20.55 MB 
+                        </div>
+                    </div>
+                    
+                    <p class="service-description text-center">
+                        Multi App is a powerful phone cloner compatible with Android 8 to 15. It can duplicate a wide range of popular apps like Facebook, Instagram, Telegram etc. The tool also supports running multiple accounts for major games like Clash of Clans, eFootball, Mobile Legends!
+                    </p>
+                    
+                    <div class="service-features justify-center">
+                        <span>Lifetime VIP Unlocked</span>
+                        <span>All Ads Removed</span>
+                        <span>Full Clean and Optimized</span>
+                    </div>
+                    
+                    <div class="flex flex-col gap-3 mt-6">
+                        <button class="glow-btn apk-download-btn text-center" onclick="downloadAPK('https://www.mediafire.com/file/x2266m8uxdidc0g/Multi+App_2.5.14_%5BMod%5D.apk/file', 'Multi App')">
+                            <span>Download APK</span>
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <div class="flex gap-2">
+                            <button class="glow-btn flex-1 text-center px-4 py-2 bg-gray-700/50 text-white rounded-lg hover:bg-gray-600/50 transition-all" onclick="copyAppLink('multi-app', 'Multi App')">
+                                <span>Copy Link</span>
+                                <i class="fas fa-link ml-2"></i>
+                            </button>
+                            <button class="glow-btn flex-1 text-center px-4 py-2 bg-gray-700/50 text-white rounded-lg hover:bg-gray-600/50 transition-all" onclick="shareApp('multi-app', 'Multi App')">
+                                <span>Share</span>
+                                <i class="fas fa-share-alt ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- APK Item 2 -->
+                <div id="magic-eraser" class="glass-card p-8 group">
+                    <!-- Big Logo Image -->
+                    <div class="flex justify-center mb-6">
+                        <div class="product-image">
+                            <img src="images/magic eraser.png" alt="Magic Eraser" class="product-img" onerror="this.src='https://via.placeholder.com/180x240/1e293b/60a5fa?text=Magic+Eraser'">
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <h3 class="service-title text-2xl">Magic Eraser MOD</h3>
+                        <div class="text-sm text-gray-400 mt-2">
+                            Version: 2.25.10 [Latest] | 13.83 MB
+                        </div>
+                    </div>
+                    
+                    <p class="service-description text-center">
+                        Magic Eraser is an AI-powered photo editor that removes objects, emojis, watermarks, and backgrounds with ease. Retouch, expand, and create transparent backgrounds in seconds. User-friendly for all, delivering flawless results!
+                    </p>
+                    
+                    <div class="service-features justify-center">
+                        <span>All Ads Removed</span>
+                        <span>Multi Language Supported</span>
+                        <span>Unnecessary Files Removed</span>
+                    </div>
+                    
+                    <div class="flex flex-col gap-3 mt-6">
+                        <button class="glow-btn apk-download-btn text-center" onclick="downloadAPK('https://www.mediafire.com/file/p52d3hgaxsuku6w/Magic+Eraser_2.25.10_[Mod].apk/file', 'Magic Eraser')">
+                            <span>Download APK</span>
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <div class="flex gap-2">
+                            <button class="glow-btn flex-1 text-center px-4 py-2 bg-gray-700/50 text-white rounded-lg hover:bg-gray-600/50 transition-all" onclick="copyAppLink('magic-eraser', 'Magic Eraser')">
+                                <span>Copy Link</span>
+                                <i class="fas fa-link ml-2"></i>
+                            </button>
+                            <button class="glow-btn flex-1 text-center px-4 py-2 bg-gray-700/50 text-white rounded-lg hover:bg-gray-600/50 transition-all" onclick="shareApp('magic-eraser', 'Magic Eraser')">
+                                <span>Share</span>
+                                <i class="fas fa-share-alt ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- APK Item 3 -->
+                <div id="capcut-pro" class="glass-card p-8 group">
+                    <!-- Big Logo Image -->
+                    <div class="flex justify-center mb-6">
+                        <div class="product-image">
+                            <img src="images/capcut.png" alt="CapCut" class="product-img" onerror="this.src='https://via.placeholder.com/180x240/1e293b/60a5fa?text=CapCut+Pro'">
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <h3 class="service-title text-2xl">CapCut Pro MOD</h3>
+                        <div class="text-sm text-gray-400 mt-2">
+                            Version 15.5.0_V2 | 245 MB
+                        </div>
+                    </div>
+                    
+                    <p class="service-description text-center">
+                        Unlock all premium CapCut features for free. Professional video editing with advanced tools, effects, and transitions without any subscription.
+                    </p>
+                    
+                    <div class="service-features justify-center">
+                        <span>All Pro Features Unlocked</span>
+                        <span>No Login Required</span>
+                        <span>Premium Effects & Filters</span>
+                    </div>
+                    
+                    <div class="flex flex-col gap-3 mt-6">
+                        <button class="glow-btn apk-download-btn text-center" onclick="downloadAPK('https://www.mediafire.com/file/v3x7b9wmhtl0pnc/CapCut_15.5.0_[Mod].apk/file', 'CapCut Pro')">
+                            <span>Download APK</span>
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <div class="flex gap-2">
+                            <button class="glow-btn flex-1 text-center px-4 py-2 bg-gray-700/50 text-white rounded-lg hover:bg-gray-600/50 transition-all" onclick="copyAppLink('capcut-pro', 'CapCut Pro')">
+                                <span>Copy Link</span>
+                                <i class="fas fa-link ml-2"></i>
+                            </button>
+                            <button class="glow-btn flex-1 text-center px-4 py-2 bg-gray-700/50 text-white rounded-lg hover:bg-gray-600/50 transition-all" onclick="shareApp('capcut-pro', 'CapCut Pro')">
+                                <span>Share</span>
+                                <i class="fas fa-share-alt ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APK Item 4 -->
+                <div id="capcut-pro v1" class="glass-card p-8 group">
+                    <!-- Big Logo Image -->
+                    <div class="flex justify-center mb-6">
+                        <div class="product-image">
+                            <img src="images/capcut_v1.png" alt="CapCut" class="product-img" onerror="this.src='https://via.placeholder.com/180x240/1e293b/60a5fa?text=CapCut+Pro'">
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <h3 class="service-title text-2xl">CapCut Pro v1</h3>
+                        <div class="text-sm text-gray-400 mt-2">
+                            CapCut_16.2.0_V1| 290 MB
+                        </div>
+                    </div>
+                    
+                    <p class="service-description text-center">
+                        Note: Before installing this version, you must uninstall the previous version. If you don't uninstall the previous version and try to update it, the apk may internet-error/crash! ⭐️
+                    </p>
+                    
+                    <div class="service-features justify-center">
+                        <span>All Pro Features Unlocked</span>
+                        <span>No Login Required</span>
+                        <span>Premium Effects & Filters</span>
+                    </div>
+                    
+                    <div class="flex flex-col gap-3 mt-6">
+                        <button class="glow-btn apk-download-btn text-center" onclick="downloadAPK('https://t.me/editing_haven/617', 'CapCut Pro v1')">
+                            <span>Download APK</span>
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <div class="flex gap-2">
+                            <button class="glow-btn flex-1 text-center px-4 py-2 bg-gray-700/50 text-white rounded-lg hover:bg-gray-600/50 transition-all" onclick="copyAppLink('capcut-pro', 'CapCut Pro')">
+                                <span>Copy Link</span>
+                                <i class="fas fa-link ml-2"></i>
+                            </button>
+                            <button class="glow-btn flex-1 text-center px-4 py-2 bg-gray-700/50 text-white rounded-lg hover:bg-gray-600/50 transition-all" onclick="shareApp('capcut-pro', 'CapCut Pro')">
+                                <span>Share</span>
+                                <i class="fas fa-share-alt ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>       
+
+            <!-- Security Notice -->
+            <div class="glass-card text-center mt-16">
+                <div class="text-4xl text-green-400 mb-4">
+                    <i class="fas fa-shield-check"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-white">Secure & Verified Downloads</h3>
+                <p class="text-gray-300 mb-4 max-w-2xl mx-auto">
+                    All our APK files are thoroughly tested, scanned for viruses, and verified for security. We ensure that every download is 100% safe and free from malware or unwanted modifications.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 text-sm text-gray-400">
+                    <span class="flex items-center space-x-2 bg-green-400/10 px-4 py-2 rounded-full">
+                        <i class="fas fa-virus-slash text-green-400"></i>
+                        <span>Virus Scanned</span>
+                    </span>
+                    <span class="flex items-center space-x-2 bg-green-400/10 px-4 py-2 rounded-full">
+                        <i class="fas fa-shield-alt text-green-400"></i>
+                        <span>Malware Free</span>
+                    </span>
+                    <span class="flex items-center space-x-2 bg-green-400/10 px-4 py-2 rounded-full">
+                        <i class="fas fa-sync-alt text-green-400"></i>
+                        <span>Verified Safety</span>
+                    </span>
+                    
+                </div>
+            </div>
+
+            <!-- Coming Soon Section -->
+            <div class="text-center mt-16">
+                <div class="glass-card p-8">
+                    <h2 class="text-3xl font-black mb-6">More Premium Apps Coming Soon</h2>
+                    <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                        We're constantly working on new mobile applications and tools to enhance your digital experience. Stay tuned for more premium APK releases!
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="tech-feature p-4">
+                            <i class="fas fa-robot text-blue-400 text-2xl mb-2"></i>
+                            <div class="font-semibold">AI Assistant</div>
+                        </div>
+                        <div class="tech-feature p-4">
+                            <i class="fas fa-folder text-green-400 text-2xl mb-2"></i>
+                            <div class="font-semibold">File Manager</div>
+                        </div>
+                        <div class="tech-feature p-4">
+                            <i class="fas fa-code text-purple-400 text-2xl mb-2"></i>
+                            <div class="font-semibold">Code Editor</div>
+                        </div>
+                        <div class="tech-feature p-4">
+                            <i class="fas fa-wifi text-pink-400 text-2xl mb-2"></i>
+                            <div class="font-semibold">Network Tools</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 border-t border-gray-800 py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center">
+                <div class="text-2xl font-bold tracking-tighter text-white mb-4">ECLIPSIA<span class="text-brand-400">.</span></div>
+                <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
+                    Premium APK downloads and mobile solutions for enhanced digital experiences.
+                </p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="https://www.tiktok.com/@eclipsia_techs?_t=ZT-90qyL9beSYn&_r=1" class="text-gray-400 hover:text-[#ff0050] transition-colors duration-300">
+                        <i class="fab fa-tiktok text-xl"></i>
+                    </a>
+                    <a href="https://youtube.com/@eclipsiatechs?si=Vk82qE300bgybJey" class="text-gray-400 hover:text-[#ff0000] transition-colors duration-300">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://t.me/eclipsia_techs" class="text-gray-400 hover:text-[#0088cc] transition-colors duration-300">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                </div>
+                <div class="text-gray-400">
+                    © 2025 Eclipsia Techs. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-8 right-8 bg-gradient-to-r from-blue-500 to-green-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 opacity-0 transform translate-y-10 z-40">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+  
+
+    <script>
+        // --- Enhanced Three.js Background ---
+        let scene, camera, renderer, particles, geometry, material;
+        let mouseX = 0;
+        let mouseY = 0;
+
+        function initParticles() {
+            const container = document.getElementById('canvas-container');
+            
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x050505, 0.0008);
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 3000);
+            camera.position.z = 1000;
+            
+            renderer = new THREE.WebGLRenderer({ 
+                alpha: true,
+                antialias: true 
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+            
+            const particleCount = 1000;
+            const positions = new Float32Array(particleCount * 3);
+            const sizes = new Float32Array(particleCount);
+            
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() * 2 - 1) * 2000;
+                positions[i + 1] = (Math.random() * 2 - 1) * 2000;
+                positions[i + 2] = (Math.random() * 2 - 1) * 2000;
+                sizes[i/3] = Math.random() * 2;
+            }
+            
+            geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+            
+            const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
+
+            material = new THREE.PointsMaterial({
+                size: 2.5,
+                color: 0x38bdf8,
+                map: sprite,
+                transparent: true,
+                opacity: 0.4,
+                sizeAttenuation: true,
+                blending: THREE.AdditiveBlending
+            });
+            
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+            
+            document.addEventListener('mousemove', onDocumentMouseMove);
+            window.addEventListener('resize', onWindowResize);
+            
+            animateParticles();
+        }
+        
+        function onDocumentMouseMove(event) {
+            mouseX = (event.clientX - window.innerWidth / 2) * 0.5;
+            mouseY = (event.clientY - window.innerHeight / 2) * 0.5;
+        }
+
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            
+            particles.rotation.y += 0.001;
+            particles.rotation.x += (mouseY * 0.001 - particles.rotation.x) * 0.05;
+            
+            const positions = particles.geometry.attributes.position.array;
+            const time = Date.now() * 0.0005;
+            
+            for(let i = 0; i < positions.length; i += 3) {
+                positions[i + 1] += Math.sin(time + positions[i] * 0.01) * 0.15;
+            }
+            particles.geometry.attributes.position.needsUpdate = true;
+            
+            renderer.render(scene, camera);
+        }
+        
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // --- Scroll Progress Bar ---
+        function updateScrollProgress() {
+            const progressBar = document.querySelector('.scroll-progress');
+            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            if (progressBar) {
+                progressBar.style.width = scrolled + '%';
+            }
+        }
+
+        // --- Scroll to Top Button ---
+        const scrollToTopButton = document.getElementById('scroll-to-top');
+        if (scrollToTopButton) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopButton.classList.remove('opacity-0', 'translate-y-10');
+                    scrollToTopButton.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    scrollToTopButton.classList.remove('opacity-100', 'translate-y-0');
+                    scrollToTopButton.classList.add('opacity-0', 'translate-y-10');
+                }
+                updateScrollProgress();
+            });
+
+            scrollToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // --- Smooth Scrolling ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // --- APK Download Functions ---
+        function downloadAPK(downloadUrl, appName) {
+            window.open(downloadUrl, '_blank');
+            showNotification(`Opening ${appName} download page...`, 'info');
+        }
+        
+        function copyAppLink(productId, appName) {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const productUrl = `${baseUrl}#${productId}`;
+            
+            navigator.clipboard.writeText(productUrl)
+                .then(() => {
+                    showNotification(`${appName} direct link copied to clipboard!`, 'success');
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    showNotification('Failed to copy link', 'error');
+                });
+        }
+        
+        function shareApp(productId, appName) {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const productUrl = `${baseUrl}#${productId}`;
+            const shareText = `Check out ${appName} on Eclipsia Techs: ${productUrl}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: `${appName} - Eclipsia Techs`,
+                    text: `Check out ${appName} on Eclipsia Techs`,
+                    url: productUrl,
+                })
+                .then(() => console.log('Successful share'))
+                .catch((error) => {
+                    console.log('Error sharing:', error);
+                    navigator.clipboard.writeText(shareText)
+                        .then(() => showNotification('App direct link copied to clipboard!', 'success'))
+                        .catch(err => showNotification('Failed to share app', 'error'));
+                });
+            } else {
+                navigator.clipboard.writeText(shareText)
+                    .then(() => showNotification('App direct link copied to clipboard!', 'success'))
+                    .catch(err => showNotification('Failed to share app', 'error'));
+            }
+        }
+
+        // --- Notification System ---
+        function showNotification(message, type = 'info') {
+            const toast = document.getElementById('notification-toast');
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+            
+            toastMessage.textContent = message;
+            
+            let iconClass, bgColor;
+            switch(type) {
+                case 'success':
+                    iconClass = 'fas fa-check-circle text-green-400';
+                    bgColor = 'bg-green-500/20 border-green-500/30';
+                    break;
+                case 'error':
+                    iconClass = 'fas fa-exclamation-circle text-red-400';
+                    bgColor = 'bg-red-500/20 border-red-500/30';
+                    break;
+                case 'warning':
+                    iconClass = 'fas fa-exclamation-triangle text-yellow-400';
+                    bgColor = 'bg-yellow-500/20 border-yellow-500/30';
+                    break;
+                default:
+                    iconClass = 'fas fa-info-circle text-blue-400';
+                    bgColor = 'bg-blue-500/20 border-blue-500/30';
+            }
+            
+            toastIcon.innerHTML = `<i class="${iconClass} text-lg"></i>`;
+            toast.className = `fixed top-4 right-4 z-50 max-w-sm w-full ${bgColor} border rounded-lg shadow-lg transform transition-transform duration-300 translate-x-0`;
+            
+            setTimeout(hideNotification, 5000);
+        }
+        
+        function hideNotification() {
+            const toast = document.getElementById('notification-toast');
+            toast.classList.remove('translate-x-0');
+            toast.classList.add('translate-x-full');
+        }
+
+        // --- Direct Navigation ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash;
+            if (hash) {
+                const targetElement = document.querySelector(hash);
+                if (targetElement) {
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                        targetElement.classList.add('apk-pulse');
+                        setTimeout(() => {
+                            targetElement.classList.remove('apk-pulse');
+                        }, 3000);
+                    }, 500);
+                }
+            }
+        });
+
+        // --- Initialize Everything ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initParticles();
+            updateScrollProgress();
+        });
+    </script>
+</body>
+</html>

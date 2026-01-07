@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eclipsia Techs - Premium Tech Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            900: '#050505',
+                            800: '#0a0a0a',
+                            700: '#121212',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* --- Glitch Effect --- */
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .glitch-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+            display: none; /* Hidden by default, triggered by JS or hover */
+        }
+
+        .glitch-active .glitch-layer {
+            display: block;
+        }
+
+        .red-layer {
+            color: #ff0055;
+            z-index: -1;
+            animation: glitch-anim-1 0.4s infinite linear alternate-reverse;
+        }
+
+        .blue-layer {
+            color: #00ddff;
+            z-index: -2;
+            animation: glitch-anim-2 0.4s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(10% 0 60% 0); transform: translate(-1px, 1px); }
+            100% { clip-path: inset(30% 0 30% 0); transform: translate(1px, -1px); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); }
+            20% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(30% 0 20% 0); transform: translate(2px, 1px); }
+            60% { clip-path: inset(10% 0 80% 0); transform: translate(-2px, -2px); }
+            80% { clip-path: inset(50% 0 30% 0); transform: translate(1px, 2px); }
+            100% { clip-path: inset(70% 0 10% 0); transform: translate(-1px, -1px); }
+        }
+
+        /* --- Glassmorphism Card --- */
+        .glass-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                        0 0 20px rgba(56, 189, 248, 0.1);
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        .icon-box {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        /* --- Text Gradients --- */
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: gradient-flow 5s ease infinite;
+        }
+        
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Button Glow --- */
+        .glow-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .glow-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, transparent 60%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .glow-btn:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        #mobile-menu.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+        }
+        #mobile-menu:not(.hidden) {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Three.js Background Canvas -->
+    <div id="canvas-container" class="fixed inset-0 -z-10 pointer-events-none opacity-60"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-dark-900/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <span class="text-xl font-bold tracking-tighter text-white">ECLIPSIA<span class="text-brand-400">.</span></span>
+                </div>
+                
+                
+
+        <!-- Mobile Menu Panel -->
+        <!-- Note: We removed 'md:hidden' from the div logic here so it works nicely via JS toggling of the 'hidden' class, but we use md:hidden on the wrapper to ensure it vanishes on desktop resize -->
+        <div class="hidden md:hidden absolute top-20 left-0 w-full bg-dark-900/95 backdrop-blur-xl border-b border-white/10 shadow-2xl" id="mobile-menu">
+            <div class="px-4 pt-4 pb-6 space-y-2">
+                <a href="#" class="block px-3 py-4 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors border-b border-white/5">Services</a>
+                <a href="#" class="block px-3 py-4 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors border-b border-white/5">Technology</a>
+                <a href="#" class="block px-3 py-4 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors border-b border-white/5">About</a>
+                <a href="#" class="block px-3 py-4 rounded-lg text-base font-bold text-brand-400 hover:bg-brand-900/20 transition-colors mt-4 text-center border border-brand-500/30">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative pt-32 pb-16 lg:pt-48 lg:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-80px)]">
+        
+        <!-- Hero Section -->
+        <div class="text-center w-full max-w-6xl mx-auto space-y-8 z-10">
+            
+            <!-- Glitch Title (FIXED: Straight Line) -->
+            <div class="relative inline-block group cursor-default w-full">
+                <!-- Using whitespace-nowrap with responsive text sizes to ensure it stays on one line -->
+                <h1 class="glitch-wrapper text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-center leading-none whitespace-nowrap">
+                    <span class="glitch-text">Eclipsia Techs</span>
+                    <span class="glitch-layer red-layer" aria-hidden="true">Eclipsia Techs</span>
+                    <span class="glitch-layer blue-layer" aria-hidden="true">Eclipsia Techs</span>
+                </h1>
+            </div>
+
+            <!-- Tagline -->
+            <div class="space-y-6 max-w-3xl mx-auto animate-float">
+                <p class="text-2xl sm:text-3xl md:text-4xl font-light tracking-wide">
+                    Redefining <span class="text-gradient font-semibold">Digital Excellence</span>
+                </p>
+                <p class="text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
+                    Where innovation meets elegance. We engineer premium AI solutions and scalable architectures for the modern enterprise.
+                </p>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-5 justify-center items-center pt-8">
+                <a href="main.html" class="glow-btn group relative px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:bg-gray-100 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] w-full sm:w-auto text-center">
+                    <span>Explore Services</span>
+                    <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                </a>
+                <a href="#contact" class="px-8 py-4 rounded-full border border-gray-700 text-gray-300 font-medium hover:border-gray-500 hover:text-white transition-all hover:bg-white/5 w-full sm:w-auto text-center">
+                    Schedule Demo
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Services Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24 w-full">
+            
+            <!-- Card 1 -->
+            <div class="glass-card rounded-2xl p-8 flex flex-col items-start space-y-4 group">
+                <div class="icon-box w-12 h-12 rounded-xl flex items-center justify-center text-brand-400 text-xl group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-brand-400 transition-colors">Web Development</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Crafting digital masterpieces with React, Vue.js, and next-gen frameworks.
+                    </p>
+                </div>
+                <div class="pt-4 mt-auto w-full border-t border-white/5 flex justify-between items-center text-xs text-gray-500 uppercase tracking-wider">
+                    <span>Full Stack</span>
+                    <i class="fas fa-arrow-right -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-white"></i>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="glass-card rounded-2xl p-8 flex flex-col items-start space-y-4 group">
+                <div class="icon-box w-12 h-12 rounded-xl flex items-center justify-center text-purple-400 text-xl group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">AI Solutions</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Intelligent automation and machine learning models tailored for business growth.
+                    </p>
+                </div>
+                <div class="pt-4 mt-auto w-full border-t border-white/5 flex justify-between items-center text-xs text-gray-500 uppercase tracking-wider">
+                    <span>Neural Nets</span>
+                    <i class="fas fa-arrow-right -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-white"></i>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="glass-card rounded-2xl p-8 flex flex-col items-start space-y-4 group">
+                <div class="icon-box w-12 h-12 rounded-xl flex items-center justify-center text-emerald-400 text-xl group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-server"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">Enterprise Systems</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Robust CRM/ERP architectures designed for global scalability and security.
+                    </p>
+                </div>
+                <div class="pt-4 mt-auto w-full border-t border-white/5 flex justify-between items-center text-xs text-gray-500 uppercase tracking-wider">
+                    <span>Scalable</span>
+                    <i class="fas fa-arrow-right -rotate-45 group-hover:rotate-0 transition-transform duration-300 text-white"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Trust Section -->
+        <div class="mt-20 pt-10 border-t border-white/5 w-full text-center">
+            <p class="text-sm text-gray-500 uppercase tracking-widest mb-8">Trusted by Industry Leaders</p>
+            <div class="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                <i class="fab fa-aws text-4xl hover:text-white transition-colors"></i>
+                <i class="fab fa-google text-4xl hover:text-white transition-colors"></i>
+                <i class="fab fa-microsoft text-4xl hover:text-white transition-colors"></i>
+                <i class="fab fa-react text-4xl hover:text-blue-400 transition-colors"></i>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const iconOpen = document.getElementById('menu-icon-open');
+            const iconClose = document.getElementById('menu-icon-close');
+            
+            // Toggle menu visibility
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                iconOpen.classList.add('hidden');
+                iconClose.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+                iconOpen.classList.remove('hidden');
+                iconClose.classList.add('hidden');
+            }
+        }
+
+        // Close menu if clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('mobile-menu');
+            const button = document.querySelector('button[onclick="toggleMobileMenu()"]');
+            
+            if (!menu.classList.contains('hidden') && !menu.contains(event.target) && !button.contains(event.target)) {
+                toggleMobileMenu();
+            }
+        });
+
+        // --- Enhanced Three.js Background ---
+        let scene, camera, renderer, particles, geometry, material;
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        function initParticles() {
+            const container = document.getElementById('canvas-container');
+            
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x050505, 0.0008);
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 3000);
+            camera.position.z = 1000;
+            
+            renderer = new THREE.WebGLRenderer({ 
+                alpha: true,
+                antialias: true 
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+            
+            const particleCount = 1500;
+            const positions = new Float32Array(particleCount * 3);
+            const sizes = new Float32Array(particleCount);
+            
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() * 2 - 1) * 2000;
+                positions[i + 1] = (Math.random() * 2 - 1) * 2000;
+                positions[i + 2] = (Math.random() * 2 - 1) * 2000;
+                sizes[i/3] = Math.random() * 2;
+            }
+            
+            geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+            
+            const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
+
+            material = new THREE.PointsMaterial({
+                size: 3,
+                color: 0x38bdf8,
+                map: sprite,
+                transparent: true,
+                opacity: 0.6,
+                sizeAttenuation: true,
+                blending: THREE.AdditiveBlending
+            });
+            
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+            
+            document.addEventListener('mousemove', onDocumentMouseMove);
+            window.addEventListener('resize', onWindowResize);
+            
+            animateParticles();
+        }
+        
+        function onDocumentMouseMove(event) {
+            mouseX = (event.clientX - windowHalfX) * 0.5;
+            mouseY = (event.clientY - windowHalfY) * 0.5;
+        }
+
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            
+            targetX = mouseX * 0.001;
+            targetY = mouseY * 0.001;
+
+            particles.rotation.y += 0.001;
+            particles.rotation.x += (targetY - particles.rotation.x) * 0.05;
+            
+            const positions = particles.geometry.attributes.position.array;
+            const time = Date.now() * 0.0005;
+            
+            for(let i = 0; i < positions.length; i += 3) {
+                positions[i + 1] += Math.sin(time + positions[i] * 0.01) * 0.2;
+            }
+            particles.geometry.attributes.position.needsUpdate = true;
+            
+            renderer.render(scene, camera);
+        }
+        
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function initGlitch() {
+            const glitchContainer = document.querySelector('.glitch-wrapper');
+            
+            setInterval(() => {
+                if (Math.random() > 0.9) {
+                    glitchContainer.classList.add('glitch-active');
+                    setTimeout(() => {
+                        glitchContainer.classList.remove('glitch-active');
+                    }, 200 + Math.random() * 400);
+                }
+            }, 3000);
+
+            glitchContainer.addEventListener('mouseenter', () => {
+                glitchContainer.classList.add('glitch-active');
+            });
+            glitchContainer.addEventListener('mouseleave', () => {
+                glitchContainer.classList.remove('glitch-active');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initParticles();
+            initGlitch();
+        });
+    </script>
+</body>
+</html>

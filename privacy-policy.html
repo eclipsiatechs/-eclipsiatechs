@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Eclipsia Techs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            900: '#050505',
+                            800: '#0a0a0a',
+                            700: '#121212',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'gradient-y': 'gradient-y 15s ease infinite',
+                        'gradient-xy': 'gradient-xy 15s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'gradient-y': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'center top'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'center center'
+                            }
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'gradient-xy': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': '0% 0%'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': '100% 100%'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- Premium Scrollbar Design --- */
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, 
+                rgba(5, 5, 5, 0.8) 0%, 
+                rgba(15, 23, 42, 0.6) 50%, 
+                rgba(5, 5, 5, 0.8) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, 
+                #38bdf8, 
+                #818cf8, 
+                #c084fc, 
+                #f472b6, 
+                #38bdf8);
+            background-size: 400% 400%;
+            border-radius: 10px;
+            border: 2px solid rgba(5, 5, 5, 0.8);
+            box-shadow: 
+                0 0 10px rgba(56, 189, 248, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+            animation: gradient-xy 3s ease infinite;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, 
+                #60a5fa, 
+                #a78bfa, 
+                #d8b4fe, 
+                #f9a8d4, 
+                #60a5fa);
+            background-size: 400% 400%;
+            box-shadow: 
+                0 0 15px rgba(56, 189, 248, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.2);
+            animation: gradient-xy 2s ease infinite;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #38bdf8 #050505;
+        }
+
+        /* --- Moving Background Effect --- */
+        .moving-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(240, 171, 252, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, rgba(52, 211, 153, 0.1) 0%, transparent 50%);
+            animation: gradient-xy 20s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        .moving-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, 
+                    transparent 30%, 
+                    rgba(56, 189, 248, 0.05) 50%, 
+                    transparent 70%);
+            animation: gradient-x 25s linear infinite;
+        }
+
+        /* --- Glassmorphism Card --- */
+        .glass-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 20px rgba(56, 189, 248, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        /* --- Enhanced Fade Animations --- */
+        .fade-in-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Back Button Style --- */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* --- Privacy Policy Specific Styles --- */
+        .policy-section {
+            background: rgba(30, 30, 30, 0.3);
+            border-left: 4px solid #38bdf8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .policy-section:hover {
+            background: rgba(30, 30, 30, 0.4);
+            border-left-color: #818cf8;
+            transform: translateX(5px);
+        }
+
+        .privacy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        /* Staggered delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+
+        /* Privacy Icons */
+        .privacy-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Moving Gradient Background -->
+    <div class="moving-bg"></div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-dark-900/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-xl font-bold tracking-tighter text-white hover:text-brand-400 transition-colors">ECLIPSIA<span class="text-brand-400">.</span></a>
+                </div>
+                
+                <!-- Back Button -->
+                <a href="main.html" class="back-btn fade-in-scroll">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Site</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Privacy Policy Content -->
+    <section class="py-20 px-4 pt-32">
+        <div class="max-w-4xl mx-auto">
+            <!-- Hero Section -->
+            <div class="text-center mb-16 fade-in-scroll">
+                <div class="relative inline-block mb-8">
+                    <i class="fas fa-shield-alt text-6xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
+                        Privacy Policy
+                    </span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto fade-in-scroll delay-200">
+                    Last updated: December 2024. Your privacy is important to us.
+                </p>
+            </div>
+
+            <div class="glass-card p-8 md:p-10 fade-in-scroll delay-100">
+                <!-- Info Collection Section -->
+                <div id="information-collected" class="policy-section fade-in-scroll delay-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="privacy-icon bg-gradient-to-r from-blue-500 to-blue-600">
+                            <i class="fas fa-database text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">1. Information We Collect</h2>
+                    </div>
+                    <p class="text-gray-300 mb-4">We collect information you provide directly to us, including:</p>
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        <span class="privacy-badge">
+                            <i class="fas fa-user"></i>
+                            Name & Contact Info
+                        </span>
+                        <span class="privacy-badge">
+                            <i class="fas fa-envelope"></i>
+                            Email Address
+                        </span>
+                        <span class="privacy-badge">
+                            <i class="fas fa-project-diagram"></i>
+                            Project Details
+                        </span>
+                        <span class="privacy-badge">
+                            <i class="fas fa-comments"></i>
+                            Communication Preferences
+                        </span>
+                        <span class="privacy-badge">
+                            <i class="fas fa-laptop"></i>
+                            Technical Information
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Usage Section -->
+                <div id="information-usage" class="policy-section fade-in-scroll delay-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="privacy-icon bg-gradient-to-r from-green-500 to-green-600">
+                            <i class="fas fa-cogs text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">2. How We Use Your Information</h2>
+                    </div>
+                    <p class="text-gray-300 mb-4">We use the information we collect to:</p>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="glass-card p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-concierge-bell text-blue-400"></i>
+                                <h3 class="font-semibold text-white">Service Provision</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Provide and maintain our services, process requests</p>
+                        </div>
+                        <div class="glass-card p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-comment-dots text-green-400"></i>
+                                <h3 class="font-semibold text-white">Communication</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Send notices, support, and service updates</p>
+                        </div>
+                        <div class="glass-card p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-chart-line text-purple-400"></i>
+                                <h3 class="font-semibold text-white">Analytics</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Monitor trends and improve services</p>
+                        </div>
+                        <div class="glass-card p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-bullhorn text-yellow-400"></i>
+                                <h3 class="font-semibold text-white">Marketing</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Communicate about products and promotions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Sharing Section -->
+                <div id="data-sharing" class="policy-section fade-in-scroll delay-400">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="privacy-icon bg-gradient-to-r from-purple-500 to-purple-600">
+                            <i class="fas fa-share-alt text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">3. Data Sharing and Disclosure</h2>
+                    </div>
+                    <p class="text-gray-300 mb-4">We do not sell, trade, or transfer your personal information without consent, except:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div class="bg-purple-500/10 border border-purple-500/20 p-4 rounded-lg">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-hands-helping text-purple-400"></i>
+                                <h3 class="font-semibold text-white">Service Providers</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Assist in our operations and maintenance</p>
+                        </div>
+                        <div class="bg-red-500/10 border border-red-500/20 p-4 rounded-lg">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-gavel text-red-400"></i>
+                                <h3 class="font-semibold text-white">Legal Compliance</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Comply with legal obligations and regulations</p>
+                        </div>
+                        <div class="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-lg">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-shield text-yellow-400"></i>
+                                <h3 class="font-semibold text-white">Protection</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Protect our rights and property</p>
+                        </div>
+                        <div class="bg-blue-500/10 border border-blue-500/20 p-4 rounded-lg">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-exchange-alt text-blue-400"></i>
+                                <h3 class="font-semibold text-white">Business Transfer</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">In connection with business acquisitions or mergers</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Security Section -->
+                <div id="data-security" class="policy-section fade-in-scroll delay-500">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="privacy-icon bg-gradient-to-r from-red-500 to-red-600">
+                            <i class="fas fa-lock text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">4. Data Security</h2>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-shield-check text-green-400 text-3xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-300">
+                                We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. Our security protocols include encryption, access controls, and regular security audits.
+                            </p>
+                            <div class="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
+                                <p class="text-green-400 text-sm">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    Please note: No method of transmission over the Internet or electronic storage is 100% secure.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Your Rights Section -->
+                <div id="your-rights" class="policy-section fade-in-scroll delay-600">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="privacy-icon bg-gradient-to-r from-yellow-500 to-yellow-600">
+                            <i class="fas fa-user-check text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">5. Your Rights</h2>
+                    </div>
+                    <p class="text-gray-300 mb-4">You have the following rights regarding your personal data:</p>
+                    <div class="grid md:grid-cols-3 gap-3 mt-4">
+                        <div class="text-center p-3 bg-yellow-500/10 rounded-lg">
+                            <i class="fas fa-eye text-yellow-400 text-xl mb-2"></i>
+                            <p class="text-white text-sm font-medium">Access Your Data</p>
+                        </div>
+                        <div class="text-center p-3 bg-yellow-500/10 rounded-lg">
+                            <i class="fas fa-edit text-yellow-400 text-xl mb-2"></i>
+                            <p class="text-white text-sm font-medium">Correct Inaccuracies</p>
+                        </div>
+                        <div class="text-center p-3 bg-yellow-500/10 rounded-lg">
+                            <i class="fas fa-trash-alt text-yellow-400 text-xl mb-2"></i>
+                            <p class="text-white text-sm font-medium">Request Deletion</p>
+                        </div>
+                        <div class="text-center p-3 bg-yellow-500/10 rounded-lg">
+                            <i class="fas fa-ban text-yellow-400 text-xl mb-2"></i>
+                            <p class="text-white text-sm font-medium">Object to Processing</p>
+                        </div>
+                        <div class="text-center p-3 bg-yellow-500/10 rounded-lg">
+                            <i class="fas fa-file-export text-yellow-400 text-xl mb-2"></i>
+                            <p class="text-white text-sm font-medium">Data Portability</p>
+                        </div>
+                        <div class="text-center p-3 bg-yellow-500/10 rounded-lg">
+                            <i class="fas fa-times-circle text-yellow-400 text-xl mb-2"></i>
+                            <p class="text-white text-sm font-medium">Withdraw Consent</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cookies Section -->
+                <div id="cookies-tracking" class="policy-section fade-in-scroll delay-700">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="privacy-icon bg-gradient-to-r from-pink-500 to-pink-600">
+                            <i class="fas fa-cookie-bite text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">6. Cookies and Tracking</h2>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-cookie text-pink-400 text-3xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-300">
+                                We use cookies and similar tracking technologies to track activity on our website and hold certain information. These help us understand how you use our site and improve your experience.
+                            </p>
+                            <div class="mt-4">
+                                <a href="cookie-policy.html" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500/20 to-pink-600/20 border border-pink-500/30 rounded-lg hover:bg-pink-500/30 transition-all duration-300">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Read our full Cookie Policy
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Changes Section -->
+                <div id="policy-changes" class="policy-section fade-in-scroll delay-800">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="privacy-icon bg-gradient-to-r from-cyan-500 to-cyan-600">
+                            <i class="fas fa-sync-alt text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">7. Changes to This Policy</h2>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-bell text-cyan-400 text-3xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-300">
+                                We may update our Privacy Policy from time to time. We will notify you of any changes by:
+                            </p>
+                            <div class="mt-3 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-file-alt text-cyan-400"></i>
+                                    <span class="text-gray-300">Posting the new policy on this page</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-calendar-alt text-cyan-400"></i>
+                                    <span class="text-gray-300">Updating the "last updated" date</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-envelope text-cyan-400"></i>
+                                    <span class="text-gray-300">Sending email notifications for major changes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Section -->
+                <div id="contact-us" class="policy-section fade-in-scroll delay-900">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="privacy-icon bg-gradient-to-r from-indigo-500 to-indigo-600">
+                            <i class="fas fa-headset text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">8. Contact Us</h2>
+                    </div>
+                    <div class="glass-card p-6 mt-4">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400 to-green-400 flex items-center justify-center">
+                                <i class="fas fa-envelope-open-text text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Privacy Support</h3>
+                                <p class="text-gray-300">Have questions about your privacy?</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <a href="mailto:eclipsiatechs@gmail.com" class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 w-full justify-center">
+                                <i class="fas fa-paper-plane"></i>
+                                eclipsiatechs@gmail.com
+                            </a>
+                            <div class="text-center mt-2">
+                                <p class="text-gray-400 text-sm">
+                                    <i class="fas fa-clock mr-2"></i>
+                                    We typically respond within 24 hours
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Last Updated Notice -->
+                <div class="mt-10 pt-6 border-t border-gray-700/50 text-center">
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-calendar text-blue-400"></i>
+                            <span class="text-gray-400">Last Updated: December 2024</span>
+                        </div>
+                        <div class="hidden md:block text-gray-400">•</div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-file-contract text-green-400"></i>
+                            <span class="text-gray-400">Version: 2.0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Navigation -->
+            <div class="glass-card p-6 mt-10 fade-in-scroll delay-1000">
+                <h3 class="text-xl font-bold text-white mb-4 text-center">Quick Navigation</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <a href="#information-collected" class="text-center px-3 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-database text-blue-400 mb-1"></i>
+                        <p class="text-sm">Data Collection</p>
+                    </a>
+                    <a href="#data-security" class="text-center px-3 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-lock text-red-400 mb-1"></i>
+                        <p class="text-sm">Security</p>
+                    </a>
+                    <a href="#your-rights" class="text-center px-3 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-user-check text-yellow-400 mb-1"></i>
+                        <p class="text-sm">Your Rights</p>
+                    </a>
+                    <a href="#contact-us" class="text-center px-3 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-headset text-indigo-400 mb-1"></i>
+                        <p class="text-sm">Contact</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 border-t border-gray-800 py-12 px-4 fade-in-scroll delay-500">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center">
+                <div class="text-2xl font-bold tracking-tighter text-white mb-4">ECLIPSIA<span class="text-brand-400">.</span></div>
+                <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
+                    Protecting your privacy with transparency and security.
+                </p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="https://www.tiktok.com/@eclipsia_techs?_t=ZT-90qyL9beSYn&_r=1" class="text-gray-400 hover:text-[#ff0050] transition-colors duration-300">
+                        <i class="fab fa-tiktok text-xl"></i>
+                    </a>
+                    <a href="https://youtube.com/@eclipsiatechs?si=Vk82qE300bgybJey" class="text-gray-400 hover:text-[#ff0000] transition-colors duration-300">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://t.me/eclipsia_techs" class="text-gray-400 hover:text-[#0088cc] transition-colors duration-300">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                </div>
+                <div class="text-gray-400 text-sm">
+                    © 2025 Eclipsia Techs. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-8 right-8 bg-gradient-to-r from-blue-500 to-green-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 opacity-0 transform translate-y-10 z-40">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        // --- Enhanced Scroll Animations ---
+        let scrollElements = [];
+        let ticking = false;
+
+        function initScrollAnimations() {
+            scrollElements = Array.from(document.querySelectorAll('.fade-in-scroll'));
+            
+            // Initial check on load
+            checkElements();
+            
+            // Set up scroll listener
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        checkElements();
+                        updateScrollProgress();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            
+            window.addEventListener('resize', checkElements);
+        }
+
+        function checkElements() {
+            const windowHeight = window.innerHeight;
+            const triggerPoint = windowHeight * 0.85;
+            
+            scrollElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                
+                if (elementTop < triggerPoint) {
+                    element.classList.add('visible');
+                } else {
+                    element.classList.remove('visible');
+                }
+            });
+        }
+
+        // --- Scroll Progress Bar ---
+        function updateScrollProgress() {
+            const progressBar = document.querySelector('.scroll-progress');
+            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            if (progressBar) {
+                progressBar.style.width = scrolled + '%';
+            }
+        }
+
+        // --- Scroll to Top Button ---
+        const scrollToTopButton = document.getElementById('scroll-to-top');
+        if (scrollToTopButton) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopButton.classList.remove('opacity-0', 'translate-y-10');
+                    scrollToTopButton.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    scrollToTopButton.classList.remove('opacity-100', 'translate-y-0');
+                    scrollToTopButton.classList.add('opacity-0', 'translate-y-10');
+                }
+            });
+
+            scrollToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // --- Smooth Scrolling for Anchor Links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // --- Initialize Everything ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initScrollAnimations();
+            
+            // Add smooth reveal for initial load
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-scroll').forEach((el, index) => {
+                    setTimeout(() => {
+                        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+                            el.classList.add('visible');
+                        }
+                    }, index * 100);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>

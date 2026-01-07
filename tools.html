@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Tools - Eclipsia Techs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            900: '#050505',
+                            800: '#0a0a0a',
+                            700: '#121212',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'gradient-y': 'gradient-y 15s ease infinite',
+                        'gradient-xy': 'gradient-xy 15s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'gradient-y': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'center top'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'center center'
+                            }
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'gradient-xy': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': '0% 0%'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': '100% 100%'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- Premium Scrollbar Design --- */
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, 
+                rgba(5, 5, 5, 0.8) 0%, 
+                rgba(15, 23, 42, 0.6) 50%, 
+                rgba(5, 5, 5, 0.8) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, 
+                #38bdf8, 
+                #818cf8, 
+                #c084fc, 
+                #f472b6, 
+                #38bdf8);
+            background-size: 400% 400%;
+            border-radius: 10px;
+            border: 2px solid rgba(5, 5, 5, 0.8);
+            box-shadow: 
+                0 0 10px rgba(56, 189, 248, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+            animation: gradient-xy 3s ease infinite;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, 
+                #60a5fa, 
+                #a78bfa, 
+                #d8b4fe, 
+                #f9a8d4, 
+                #60a5fa);
+            background-size: 400% 400%;
+            box-shadow: 
+                0 0 15px rgba(56, 189, 248, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.2);
+            animation: gradient-xy 2s ease infinite;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #38bdf8 #050505;
+        }
+
+        /* --- Moving Background Effect --- */
+        .moving-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(240, 171, 252, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, rgba(52, 211, 153, 0.1) 0%, transparent 50%);
+            animation: gradient-xy 20s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        .moving-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, 
+                    transparent 30%, 
+                    rgba(56, 189, 248, 0.05) 50%, 
+                    transparent 70%);
+            animation: gradient-x 25s linear infinite;
+        }
+
+        /* --- Glassmorphism Card --- */
+        .glass-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 20px rgba(56, 189, 248, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        /* --- Enhanced Fade Animations --- */
+        .fade-in-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* --- Back Button Style --- */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* --- Tool Card Styles --- */
+        .tool-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+        }
+
+        .tool-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tool-description {
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        .tool-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tool-features span {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        /* --- Tool Button Styles --- */
+        .tool-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            background: linear-gradient(45deg, #38bdf8, #8b5cf6);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .tool-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .tool-btn:hover::before {
+            left: 100%;
+        }
+
+        .tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
+        }
+
+        .coming-soon-btn {
+            background: linear-gradient(45deg, #6b7280, #4b5563);
+        }
+
+        .coming-soon-btn:hover {
+            box-shadow: 0 10px 25px rgba(107, 114, 128, 0.4);
+        }
+
+        .custom-tool-btn {
+            background: linear-gradient(45deg, #10b981, #059669);
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .custom-tool-btn:hover {
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-live {
+            background: linear-gradient(45deg, #10b981, #059669);
+            color: white;
+        }
+
+        .status-soon {
+            background: linear-gradient(45deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .status-dev {
+            background: linear-gradient(45deg, #6b7280, #4b5563);
+            color: white;
+        }
+
+        /* Staggered delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Moving Gradient Background -->
+    <div class="moving-bg"></div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-dark-900/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-xl font-bold tracking-tighter text-white hover:text-brand-400 transition-colors">ECLIPSIA<span class="text-brand-400">.</span></a>
+                </div>
+                
+                <!-- Back Button -->
+                <a href="main.html" class="back-btn fade-in-scroll">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Main</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tools Content -->
+    <section class="py-20 px-4 pt-32">
+        <div class="max-w-7xl mx-auto">
+            <!-- Hero Section -->
+            <div class="text-center mb-20 fade-in-scroll">
+                <div class="relative inline-block mb-8">
+                    <i class="fas fa-tools text-6xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                        Our Tools
+                    </span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto fade-in-scroll delay-200">
+                    Discover our collection of innovative tools designed to enhance productivity and drive digital transformation.
+                </p>
+            </div>
+
+            <!-- Tools Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <!-- Text-to-Speech Tool -->
+                <div class="glass-card p-8 tool-card group fade-in-scale">
+                    <span class="status-badge status-live">Live</span>
+                    <div class="tool-icon">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <h3 class="tool-title">ECLIPSIA VOX</h3>
+                    <p class="tool-description">
+                        Advanced text-to-speech engine with natural, human-like voice generation supporting multiple languages and real-time conversion with high-quality audio output.
+                    </p>
+                    <div class="tool-features">
+                        <span>Natural Voices</span>
+                        <span>Multi-language</span>
+                        <span>Real-time</span>
+                        <span>HD Audio</span>
+                        <span>Custom Voices</span>
+                        <span>Batch Processing</span>
+                    </div>
+                    <div class="flex flex-col gap-3 mt-auto">
+                        <a href="https://eclipsiavox.vercel.app" target="_blank" class="tool-btn">
+                            <span>Use Tool Now</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <div class="text-center">
+                            <p class="text-green-400 text-sm">
+                                <i class="fas fa-circle text-xs"></i>
+                                Live & Operational
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Image Generation -->
+                <div class="glass-card p-8 tool-card group fade-in-scale delay-100">
+                    <span class="status-badge status-soon">Coming Soon</span>
+                    <div class="tool-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3 class="tool-title">AI Image Generator</h3>
+                    <p class="tool-description">
+                        Create stunning visual content using state-of-the-art AI image generation technology with style transfer and HD quality output for marketing and design.
+                    </p>
+                    <div class="tool-features">
+                        <span>AI Art</span>
+                        <span>Style Transfer</span>
+                        <span>HD Quality</span>
+                        <span>Multiple Styles</span>
+                        <span>Custom Prompts</span>
+                        <span>Batch Creation</span>
+                    </div>
+                    <div class="flex flex-col gap-3 mt-auto">
+                        <button class="tool-btn coming-soon-btn" onclick="showNotification('AI Image Generator launching Q2 2025!', 'info')">
+                            <span>Coming Soon</span>
+                            <i class="fas fa-clock"></i>
+                        </button>
+                        <div class="text-center">
+                            <p class="text-yellow-400 text-sm">
+                                <i class="fas fa-hourglass-half text-xs"></i>
+                                Estimated: Q2 2025
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- APK Downloads -->
+                <div class="glass-card p-8 tool-card group fade-in-scale delay-200">
+                    <span class="status-badge status-live">Live</span>
+                    <div class="tool-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3 class="tool-title">APK Library</h3>
+                    <p class="tool-description">
+                        Access our collection of mobile applications and tools through secure APK downloads for enhanced productivity and mobile solutions. All files verified.
+                    </p>
+                    <div class="tool-features">
+                        <span>Secure Downloads</span>
+                        <span>Mobile Apps</span>
+                        <span>Latest Versions</span>
+                        <span>Verified Sources</span>
+                        <span>Malware Free</span>
+                        <span>Regular Updates</span>
+                    </div>
+                    <div class="flex flex-col gap-3 mt-auto">
+                        <a href="apk-section.html" class="tool-btn">
+                            <span>View APK Library</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <div class="text-center">
+                            <p class="text-green-400 text-sm">
+                                <i class="fas fa-check-circle text-xs"></i>
+                                100+ Downloads Daily
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Optimizer -->
+                <div class="glass-card p-8 tool-card group fade-in-scale delay-300">
+                    <span class="status-badge status-dev">In Development</span>
+                    <div class="tool-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="tool-title">Code Optimizer</h3>
+                    <p class="tool-description">
+                        AI-powered code optimization tool that analyzes and improves your code for better performance, efficiency, and adherence to best practices.
+                    </p>
+                    <div class="tool-features">
+                        <span>Code Analysis</span>
+                        <span>Performance Boost</span>
+                        <span>Best Practices</span>
+                        <span>Security Scan</span>
+                        <span>Multi-language</span>
+                        <span>Auto Refactor</span>
+                    </div>
+                    <div class="flex flex-col gap-3 mt-auto">
+                        <button class="tool-btn coming-soon-btn" onclick="showNotification('Code Optimizer in development!', 'info')">
+                            <span>In Development</span>
+                            <i class="fas fa-code-branch"></i>
+                        </button>
+                        <div class="text-center">
+                            <p class="text-blue-400 text-sm">
+                                <i class="fas fa-cogs text-xs"></i>
+                                Development Progress: 65%
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Analyzer -->
+                <div class="glass-card p-8 tool-card group fade-in-scale delay-400">
+                    <span class="status-badge status-dev">In Development</span>
+                    <div class="tool-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="tool-title">Data Analyzer</h3>
+                    <p class="tool-description">
+                        Advanced data analysis tool that processes large datasets and provides actionable insights through machine learning algorithms and visual analytics.
+                    </p>
+                    <div class="tool-features">
+                        <span>Data Processing</span>
+                        <span>ML Insights</span>
+                        <span>Visual Analytics</span>
+                        <span>Real-time</span>
+                        <span>Custom Reports</span>
+                        <span>API Access</span>
+                    </div>
+                    <div class="flex flex-col gap-3 mt-auto">
+                        <button class="tool-btn coming-soon-btn" onclick="showNotification('Data Analyzer launching Q3 2025!', 'info')">
+                            <span>In Development</span>
+                            <i class="fas fa-microscope"></i>
+                        </button>
+                        <div class="text-center">
+                            <p class="text-blue-400 text-sm">
+                                <i class="fas fa-cogs text-xs"></i>
+                                Development Progress: 40%
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Scanner -->
+                <div class="glass-card p-8 tool-card group fade-in-scale delay-500">
+                    <span class="status-badge status-soon">Coming Soon</span>
+                    <div class="tool-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="tool-title">Security Scanner</h3>
+                    <p class="tool-description">
+                        Comprehensive security scanning tool that identifies vulnerabilities and provides recommendations for secure development and compliance checking.
+                    </p>
+                    <div class="tool-features">
+                        <span>Vulnerability Scan</span>
+                        <span>Security Audit</span>
+                        <span>Compliance Check</span>
+                        <span>Pen Testing</span>
+                        <span>Risk Assessment</span>
+                        <span>Reports</span>
+                    </div>
+                    <div class="flex flex-col gap-3 mt-auto">
+                        <button class="tool-btn coming-soon-btn" onclick="showNotification('Security Scanner coming soon!', 'info')">
+                            <span>Coming Soon</span>
+                            <i class="fas fa-shield-check"></i>
+                        </button>
+                        <div class="text-center">
+                            <p class="text-yellow-400 text-sm">
+                                <i class="fas fa-calendar-alt text-xs"></i>
+                                Planned: Q4 2025
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- More Tools Section -->
+            <div class="mb-16 fade-in-scroll delay-300">
+                <h2 class="text-3xl md:text-4xl font-black mb-8 text-center">More Tools in Pipeline</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="glass-card p-6 text-center">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-file-pdf text-white"></i>
+                        </div>
+                        <h4 class="font-semibold text-white">PDF Toolkit</h4>
+                        <p class="text-gray-400 text-xs mt-1">Edit, convert & compress</p>
+                    </div>
+                    <div class="glass-card p-6 text-center">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-video text-white"></i>
+                        </div>
+                        <h4 class="font-semibold text-white">Video Editor</h4>
+                        <p class="text-gray-400 text-xs mt-1">AI-powered editing</p>
+                    </div>
+                    <div class="glass-card p-6 text-center">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-robot text-white"></i>
+                        </div>
+                        <h4 class="font-semibold text-white">AI Chatbot</h4>
+                        <p class="text-gray-400 text-xs mt-1">Custom AI assistants</p>
+                    </div>
+                    <div class="glass-card p-6 text-center">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-network-wired text-white"></i>
+                        </div>
+                        <h4 class="font-semibold text-white">API Builder</h4>
+                        <p class="text-gray-400 text-xs mt-1">REST API generation</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="text-center fade-in-scroll delay-400">
+                <div class="glass-card p-10">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-magic text-white text-3xl"></i>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-black mb-6">Need a Custom Tool?</h2>
+                    <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                        We can develop custom tools tailored to your specific business needs and requirements. Let's build something amazing together!
+                    </p>
+                    <a href="main.html#contact" class="tool-btn custom-tool-btn">
+                        <span>Request Custom Tool</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <p class="text-gray-400 mt-6 text-sm">
+                        <i class="fas fa-lightbulb mr-2"></i>
+                        Have an idea? Let's discuss it in a free consultation
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 fade-in-scroll delay-500">
+                <div class="glass-card p-6 text-center">
+                    <div class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-2">6+</div>
+                    <div class="text-gray-400">Tools Available</div>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <div class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-2">5000+</div>
+                    <div class="text-gray-400">Active Users</div>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <div class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-2">99.8%</div>
+                    <div class="text-gray-400">Uptime</div>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <div class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-2">24/7</div>
+                    <div class="text-gray-400">Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 border-t border-gray-800 py-12 px-4 fade-in-scroll delay-500">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center">
+                <div class="text-2xl font-bold tracking-tighter text-white mb-4">ECLIPSIA<span class="text-brand-400">.</span></div>
+                <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
+                    Premium tools for enhanced productivity and digital transformation.
+                </p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="https://www.tiktok.com/@eclipsia_techs?_t=ZT-90qyL9beSYn&_r=1" class="text-gray-400 hover:text-[#ff0050] transition-colors duration-300">
+                        <i class="fab fa-tiktok text-xl"></i>
+                    </a>
+                    <a href="https://youtube.com/@eclipsiatechs?si=Vk82qE300bgybJey" class="text-gray-400 hover:text-[#ff0000] transition-colors duration-300">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://t.me/eclipsia_techs" class="text-gray-400 hover:text-[#0088cc] transition-colors duration-300">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                </div>
+                <div class="text-gray-400">
+                    © 2025 Eclipsia Techs. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-8 right-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 opacity-0 transform translate-y-10 z-40">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    
+
+    <script>
+        // --- Enhanced Scroll Animations ---
+        let scrollElements = [];
+        let ticking = false;
+
+        function initScrollAnimations() {
+            scrollElements = Array.from(document.querySelectorAll('.fade-in-scroll, .fade-in-scale'));
+            
+            // Initial check on load
+            checkElements();
+            
+            // Set up scroll listener
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        checkElements();
+                        updateScrollProgress();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            
+            window.addEventListener('resize', checkElements);
+        }
+
+        function checkElements() {
+            const windowHeight = window.innerHeight;
+            const triggerPoint = windowHeight * 0.85;
+            
+            scrollElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                
+                if (elementTop < triggerPoint) {
+                    element.classList.add('visible');
+                } else {
+                    element.classList.remove('visible');
+                }
+            });
+        }
+
+        // --- Scroll Progress Bar ---
+        function updateScrollProgress() {
+            const progressBar = document.querySelector('.scroll-progress');
+            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            if (progressBar) {
+                progressBar.style.width = scrolled + '%';
+            }
+        }
+
+        // --- Scroll to Top Button ---
+        const scrollToTopButton = document.getElementById('scroll-to-top');
+        if (scrollToTopButton) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopButton.classList.remove('opacity-0', 'translate-y-10');
+                    scrollToTopButton.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    scrollToTopButton.classList.remove('opacity-100', 'translate-y-0');
+                    scrollToTopButton.classList.add('opacity-0', 'translate-y-10');
+                }
+            });
+
+            scrollToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // --- Notification System ---
+        function showNotification(message, type = 'info') {
+            const toast = document.getElementById('notification-toast');
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+            
+            toastMessage.textContent = message;
+            
+            let iconClass, bgColor;
+            switch(type) {
+                case 'success':
+                    iconClass = 'fas fa-check-circle text-green-400';
+                    bgColor = 'bg-green-500/20 border-green-500/30';
+                    break;
+                case 'error':
+                    iconClass = 'fas fa-exclamation-circle text-red-400';
+                    bgColor = 'bg-red-500/20 border-red-500/30';
+                    break;
+                case 'warning':
+                    iconClass = 'fas fa-exclamation-triangle text-yellow-400';
+                    bgColor = 'bg-yellow-500/20 border-yellow-500/30';
+                    break;
+                default:
+                    iconClass = 'fas fa-info-circle text-blue-400';
+                    bgColor = 'bg-blue-500/20 border-blue-500/30';
+            }
+            
+            toastIcon.innerHTML = `<i class="${iconClass} text-lg"></i>`;
+            toast.className = `fixed top-4 right-4 z-50 max-w-sm w-full ${bgColor} border rounded-lg shadow-lg transform transition-transform duration-300 translate-x-0`;
+            
+            setTimeout(hideNotification, 5000);
+        }
+        
+        function hideNotification() {
+            const toast = document.getElementById('notification-toast');
+            toast.classList.remove('translate-x-0');
+            toast.classList.add('translate-x-full');
+        }
+
+        // --- Initialize Everything ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initScrollAnimations();
+            
+            // Add smooth reveal for initial load
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-scroll, .fade-in-scale').forEach((el, index) => {
+                    setTimeout(() => {
+                        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+                            el.classList.add('visible');
+                        }
+                    }, index * 100);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>

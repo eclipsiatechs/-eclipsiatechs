@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Policy - Eclipsia Techs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            900: '#050505',
+                            800: '#0a0a0a',
+                            700: '#121212',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'gradient-y': 'gradient-y 15s ease infinite',
+                        'gradient-xy': 'gradient-xy 15s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'gradient-y': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'center top'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'center center'
+                            }
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'gradient-xy': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': '0% 0%'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': '100% 100%'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- Premium Scrollbar Design --- */
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, 
+                rgba(5, 5, 5, 0.8) 0%, 
+                rgba(15, 23, 42, 0.6) 50%, 
+                rgba(5, 5, 5, 0.8) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, 
+                #38bdf8, 
+                #818cf8, 
+                #c084fc, 
+                #f472b6, 
+                #38bdf8);
+            background-size: 400% 400%;
+            border-radius: 10px;
+            border: 2px solid rgba(5, 5, 5, 0.8);
+            box-shadow: 
+                0 0 10px rgba(56, 189, 248, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+            animation: gradient-xy 3s ease infinite;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, 
+                #60a5fa, 
+                #a78bfa, 
+                #d8b4fe, 
+                #f9a8d4, 
+                #60a5fa);
+            background-size: 400% 400%;
+            box-shadow: 
+                0 0 15px rgba(56, 189, 248, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.2);
+            animation: gradient-xy 2s ease infinite;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #38bdf8 #050505;
+        }
+
+        /* --- Moving Background Effect --- */
+        .moving-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(240, 171, 252, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, rgba(52, 211, 153, 0.1) 0%, transparent 50%);
+            animation: gradient-xy 20s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        .moving-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, 
+                    transparent 30%, 
+                    rgba(56, 189, 248, 0.05) 50%, 
+                    transparent 70%);
+            animation: gradient-x 25s linear infinite;
+        }
+
+        /* --- Glassmorphism Card --- */
+        .glass-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 20px rgba(56, 189, 248, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        /* --- Enhanced Fade Animations --- */
+        .fade-in-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Back Button Style --- */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* --- Text Gradients --- */
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: gradient-flow 5s ease infinite;
+        }
+        
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Cookie Policy Specific Styles --- */
+        .policy-section {
+            background: rgba(30, 30, 30, 0.3);
+            border-left: 4px solid #38bdf8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .policy-section:hover {
+            background: rgba(30, 30, 30, 0.4);
+            border-left-color: #818cf8;
+            transform: translateX(5px);
+        }
+
+        .cookie-type-card {
+            background: rgba(56, 189, 248, 0.05);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cookie-type-card:hover {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: rgba(56, 189, 248, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        /* Staggered delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Moving Gradient Background -->
+    <div class="moving-bg"></div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-dark-900/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-xl font-bold tracking-tighter text-white hover:text-brand-400 transition-colors">ECLIPSIA<span class="text-brand-400">.</span></a>
+                </div>
+                
+                <!-- Back Button -->
+                <a href="main.html" class="back-btn fade-in-scroll">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Site</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cookie Policy Content -->
+    <section class="py-20 px-4 pt-32">
+        <div class="max-w-4xl mx-auto">
+            <!-- Hero Section -->
+            <div class="text-center mb-16 fade-in-scroll">
+                <div class="relative inline-block mb-8">
+                    <i class="fas fa-cookie-bite text-6xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
+                        Cookie Policy
+                    </span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto fade-in-scroll delay-200">
+                    Last updated: December 2024. Learn how we use cookies to enhance your browsing experience.
+                </p>
+            </div>
+
+            <div class="glass-card p-8 md:p-10 fade-in-scroll delay-100">
+                <div class="space-y-10">
+                    <!-- Section 1 -->
+                    <div id="what-are-cookies" class="policy-section fade-in-scroll delay-200">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                                <i class="fas fa-info text-white"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">1. What Are Cookies</h2>
+                        </div>
+                        <p class="text-gray-300 leading-relaxed">
+                            Cookies are small text files that are stored on your computer or mobile device when you visit our website. They help the website remember information about your visit, which can make it easier to visit the site again and make the site more useful to you.
+                        </p>
+                    </div>
+
+                    <!-- Section 2 -->
+                    <div id="how-we-use-cookies" class="policy-section fade-in-scroll delay-300">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center">
+                                <i class="fas fa-cogs text-white"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">2. How We Use Cookies</h2>
+                        </div>
+                        <p class="text-gray-300 mb-4">We use cookies for several purposes:</p>
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                            <div class="cookie-type-card">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <i class="fas fa-shield-alt text-blue-400 text-xl"></i>
+                                    <h3 class="text-lg font-semibold text-white">Essential Cookies</h3>
+                                </div>
+                                <p class="text-gray-400 text-sm">Required for the website to function properly</p>
+                            </div>
+                            <div class="cookie-type-card">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <i class="fas fa-chart-line text-green-400 text-xl"></i>
+                                    <h3 class="text-lg font-semibold text-white">Performance Cookies</h3>
+                                </div>
+                                <p class="text-gray-400 text-sm">Help us understand how visitors interact with our website</p>
+                            </div>
+                            <div class="cookie-type-card">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <i class="fas fa-sliders-h text-purple-400 text-xl"></i>
+                                    <h3 class="text-lg font-semibold text-white">Functionality Cookies</h3>
+                                </div>
+                                <p class="text-gray-400 text-sm">Remember your preferences and settings</p>
+                            </div>
+                            <div class="cookie-type-card">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <i class="fas fa-chart-bar text-yellow-400 text-xl"></i>
+                                    <h3 class="text-lg font-semibold text-white">Analytics Cookies</h3>
+                                </div>
+                                <p class="text-gray-400 text-sm">Help us improve our website and services</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3 -->
+                    <div id="types-of-cookies" class="policy-section fade-in-scroll delay-400">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center">
+                                <i class="fas fa-cookie text-white"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">3. Types of Cookies We Use</h2>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="cookie-type-card">
+                                <h3 class="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                                    <i class="fas fa-shield text-blue-400"></i>
+                                    Essential Cookies
+                                </h3>
+                                <p class="text-gray-400">These cookies are necessary for the website to function and cannot be switched off. They are usually only set in response to actions made by you.</p>
+                            </div>
+                            <div class="cookie-type-card">
+                                <h3 class="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                                    <i class="fas fa-chart-line text-green-400"></i>
+                                    Performance Cookies
+                                </h3>
+                                <p class="text-gray-400">These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site.</p>
+                            </div>
+                            <div class="cookie-type-card">
+                                <h3 class="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                                    <i class="fas fa-sliders-h text-purple-400"></i>
+                                    Functionality Cookies
+                                </h3>
+                                <p class="text-gray-400">These cookies enable the website to provide enhanced functionality and personalization.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4 -->
+                    <div id="third-party-cookies" class="policy-section fade-in-scroll delay-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 flex items-center justify-center">
+                                <i class="fas fa-external-link-alt text-white"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">4. Third-Party Cookies</h2>
+                        </div>
+                        <p class="text-gray-300 mb-4">We may also use various third-party cookies to report usage statistics of the service, deliver advertisements on and through the service, and so on. These include:</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                            <div class="bg-gray-800/30 p-4 rounded-lg text-center">
+                                <i class="fab fa-google text-red-400 text-2xl mb-2"></i>
+                                <p class="text-gray-300 font-medium">Google Analytics</p>
+                            </div>
+                            <div class="bg-gray-800/30 p-4 rounded-lg text-center">
+                                <i class="fas fa-share-alt text-blue-400 text-2xl mb-2"></i>
+                                <p class="text-gray-300 font-medium">Social Media Platforms</p>
+                            </div>
+                            <div class="bg-gray-800/30 p-4 rounded-lg text-center">
+                                <i class="fas fa-credit-card text-green-400 text-2xl mb-2"></i>
+                                <p class="text-gray-300 font-medium">Payment Processors</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5 -->
+                    <div id="managing-cookies" class="policy-section fade-in-scroll delay-600">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center">
+                                <i class="fas fa-user-cog text-white"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">5. Managing Cookies</h2>
+                        </div>
+                        <p class="text-gray-300 mb-4">
+                            You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed. However, if you do this, you may have to manually adjust some preferences every time you visit a site and some services and functionalities may not work.
+                        </p>
+                        <p class="text-gray-300">
+                            Most web browsers allow some control of most cookies through the browser settings. To find out more about cookies, including how to see what cookies have been set, visit:
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                            <a href="https://www.aboutcookies.org" target="_blank" class="px-4 py-3 bg-gradient-to-r from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-lg hover:bg-blue-500/30 transition-all duration-300 text-center">
+                                <i class="fab fa-chrome text-blue-400 mr-2"></i>
+                                www.aboutcookies.org
+                            </a>
+                            <a href="https://www.allaboutcookies.org" target="_blank" class="px-4 py-3 bg-gradient-to-r from-green-500/20 to-green-600/20 border border-green-500/30 rounded-lg hover:bg-green-500/30 transition-all duration-300 text-center">
+                                <i class="fab fa-firefox text-green-400 mr-2"></i>
+                                www.allaboutcookies.org
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Section 6 -->
+                    <div id="policy-changes" class="policy-section fade-in-scroll delay-700">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 flex items-center justify-center">
+                                <i class="fas fa-sync-alt text-white"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">6. Changes to This Policy</h2>
+                        </div>
+                        <p class="text-gray-300">
+                            We may update our Cookie Policy from time to time. We will notify you of any changes by posting the new Cookie Policy on this page and updating the "last updated" date.
+                        </p>
+                    </div>
+
+                    <!-- Section 7 -->
+                    <div id="contact-info" class="policy-section fade-in-scroll delay-800">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-600 flex items-center justify-center">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">7. Contact Information</h2>
+                        </div>
+                        <p class="text-gray-300 mb-4">If you have any questions about our Cookie Policy, please contact us:</p>
+                        <div class="glass-card p-6 mt-4">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400 to-green-400 flex items-center justify-center">
+                                    <i class="fas fa-envelope-open-text text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Email Support</h3>
+                                    <p class="text-gray-300">We typically respond within 24 hours</p>
+                                </div>
+                            </div>
+                            <a href="mailto:eclipsiatechs@gmail.com" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300">
+                                <i class="fas fa-paper-plane"></i>
+                                eclipsiatechs@gmail.com
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Last Updated Notice -->
+                <div class="mt-10 pt-6 border-t border-gray-700/50 text-center">
+                    <p class="text-gray-400 text-sm">
+                        <i class="fas fa-clock mr-2"></i>
+                        This policy was last updated on December 2024
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Navigation -->
+            <div class="glass-card p-6 mt-10 fade-in-scroll delay-900">
+                <h3 class="text-xl font-bold text-white mb-4 text-center">Quick Navigation</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <a href="#what-are-cookies" class="text-center px-3 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-info-circle text-blue-400 mb-1"></i>
+                        <p class="text-sm">What are Cookies</p>
+                    </a>
+                    <a href="#types-of-cookies" class="text-center px-3 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-cookie text-purple-400 mb-1"></i>
+                        <p class="text-sm">Types of Cookies</p>
+                    </a>
+                    <a href="#managing-cookies" class="text-center px-3 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-user-cog text-red-400 mb-1"></i>
+                        <p class="text-sm">Manage Cookies</p>
+                    </a>
+                    <a href="#contact-info" class="text-center px-3 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-envelope text-cyan-400 mb-1"></i>
+                        <p class="text-sm">Contact Us</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 border-t border-gray-800 py-12 px-4 fade-in-scroll delay-500">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center">
+                <div class="text-2xl font-bold tracking-tighter text-white mb-4">ECLIPSIA<span class="text-brand-400">.</span></div>
+                <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
+                    Premium APK downloads and mobile solutions for enhanced digital experiences.
+                </p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="https://www.tiktok.com/@eclipsia_techs?_t=ZT-90qyL9beSYn&_r=1" class="text-gray-400 hover:text-[#ff0050] transition-colors duration-300">
+                        <i class="fab fa-tiktok text-xl"></i>
+                    </a>
+                    <a href="https://youtube.com/@eclipsiatechs?si=Vk82qE300bgybJey" class="text-gray-400 hover:text-[#ff0000] transition-colors duration-300">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://t.me/eclipsia_techs" class="text-gray-400 hover:text-[#0088cc] transition-colors duration-300">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                </div>
+                <div class="text-gray-400 text-sm">
+                    © 2025 Eclipsia Techs. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-8 right-8 bg-gradient-to-r from-blue-500 to-green-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 opacity-0 transform translate-y-10 z-40">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        // --- Enhanced Scroll Animations ---
+        let scrollElements = [];
+        let ticking = false;
+
+        function initScrollAnimations() {
+            scrollElements = Array.from(document.querySelectorAll('.fade-in-scroll'));
+            
+            // Initial check on load
+            checkElements();
+            
+            // Set up scroll listener
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        checkElements();
+                        updateScrollProgress();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            
+            window.addEventListener('resize', checkElements);
+        }
+
+        function checkElements() {
+            const windowHeight = window.innerHeight;
+            const triggerPoint = windowHeight * 0.85;
+            
+            scrollElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                
+                if (elementTop < triggerPoint) {
+                    element.classList.add('visible');
+                } else {
+                    element.classList.remove('visible');
+                }
+            });
+        }
+
+        // --- Scroll Progress Bar ---
+        function updateScrollProgress() {
+            const progressBar = document.querySelector('.scroll-progress');
+            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            if (progressBar) {
+                progressBar.style.width = scrolled + '%';
+            }
+        }
+
+        // --- Scroll to Top Button ---
+        const scrollToTopButton = document.getElementById('scroll-to-top');
+        if (scrollToTopButton) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopButton.classList.remove('opacity-0', 'translate-y-10');
+                    scrollToTopButton.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    scrollToTopButton.classList.remove('opacity-100', 'translate-y-0');
+                    scrollToTopButton.classList.add('opacity-0', 'translate-y-10');
+                }
+            });
+
+            scrollToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // --- Smooth Scrolling for Anchor Links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // --- Initialize Everything ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initScrollAnimations();
+            
+            // Add smooth reveal for initial load
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-scroll').forEach((el, index) => {
+                    setTimeout(() => {
+                        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+                            el.classList.add('visible');
+                        }
+                    }, index * 100);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>

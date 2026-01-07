@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Eclipsia Techs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            900: '#050505',
+                            800: '#0a0a0a',
+                            700: '#121212',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'gradient-y': 'gradient-y 15s ease infinite',
+                        'gradient-xy': 'gradient-xy 15s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'gradient-y': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'center top'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'center center'
+                            }
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'gradient-xy': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': '0% 0%'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': '100% 100%'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- Premium Scrollbar Design --- */
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, 
+                rgba(5, 5, 5, 0.8) 0%, 
+                rgba(15, 23, 42, 0.6) 50%, 
+                rgba(5, 5, 5, 0.8) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, 
+                #38bdf8, 
+                #818cf8, 
+                #c084fc, 
+                #f472b6, 
+                #38bdf8);
+            background-size: 400% 400%;
+            border-radius: 10px;
+            border: 2px solid rgba(5, 5, 5, 0.8);
+            box-shadow: 
+                0 0 10px rgba(56, 189, 248, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+            animation: gradient-xy 3s ease infinite;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, 
+                #60a5fa, 
+                #a78bfa, 
+                #d8b4fe, 
+                #f9a8d4, 
+                #60a5fa);
+            background-size: 400% 400%;
+            box-shadow: 
+                0 0 15px rgba(56, 189, 248, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.2);
+            animation: gradient-xy 2s ease infinite;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #38bdf8 #050505;
+        }
+
+        /* --- Moving Background Effect --- */
+        .moving-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(240, 171, 252, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, rgba(52, 211, 153, 0.1) 0%, transparent 50%);
+            animation: gradient-xy 20s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        .moving-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, 
+                    transparent 30%, 
+                    rgba(56, 189, 248, 0.05) 50%, 
+                    transparent 70%);
+            animation: gradient-x 25s linear infinite;
+        }
+
+        /* --- Glassmorphism Card --- */
+        .glass-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 20px rgba(56, 189, 248, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        /* --- Enhanced Fade Animations --- */
+        .fade-in-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Back Button Style --- */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* --- Terms Specific Styles --- */
+        .terms-section {
+            background: rgba(30, 30, 30, 0.3);
+            border-left: 4px solid #38bdf8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .terms-section:hover {
+            background: rgba(30, 30, 30, 0.4);
+            border-left-color: #818cf8;
+            transform: translateX(5px);
+        }
+
+        .term-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: rgba(56, 189, 248, 0.05);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover {
+            background: rgba(56, 189, 248, 0.1);
+            transform: translateX(5px);
+        }
+
+        /* Progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        /* Terms Icons */
+        .terms-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        /* Legal Notice */
+        .legal-notice {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Staggered delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Moving Gradient Background -->
+    <div class="moving-bg"></div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-dark-900/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-xl font-bold tracking-tighter text-white hover:text-brand-400 transition-colors">ECLIPSIA<span class="text-brand-400">.</span></a>
+                </div>
+                
+                <!-- Back Button -->
+                <a href="main.html" class="back-btn fade-in-scroll">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Site</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Terms of Service Content -->
+    <section class="py-20 px-4 pt-32">
+        <div class="max-w-4xl mx-auto">
+            <!-- Hero Section -->
+            <div class="text-center mb-16 fade-in-scroll">
+                <div class="relative inline-block mb-8">
+                    <i class="fas fa-file-contract text-6xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
+                        Terms of Service
+                    </span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto fade-in-scroll delay-200">
+                    Last updated: December 2024. Please read these terms carefully before using our services.
+                </p>
+            </div>
+
+            <div class="glass-card p-8 md:p-10 fade-in-scroll delay-100">
+                <!-- Agreement Section -->
+                <div id="agreement-terms" class="terms-section fade-in-scroll delay-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="terms-icon bg-gradient-to-r from-blue-500 to-blue-600">
+                            <i class="fas fa-handshake text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">1. Agreement to Terms</h2>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-blue-400 text-2xl mt-1"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-300">
+                                By accessing or using our services, you agree to be bound by these Terms of Service and our Privacy Policy. If you disagree with any part of the terms, you may not access our services.
+                            </p>
+                            <div class="legal-notice mt-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i class="fas fa-exclamation-triangle text-red-400"></i>
+                                    <span class="text-white font-semibold">Important Notice</span>
+                                </div>
+                                <p class="text-gray-300 text-sm">
+                                    Continuing to use our services constitutes acceptance of these terms. If you do not agree, please discontinue use immediately.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Section -->
+                <div id="services-description" class="terms-section fade-in-scroll delay-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="terms-icon bg-gradient-to-r from-green-500 to-green-600">
+                            <i class="fas fa-cogs text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">2. Services Description</h2>
+                    </div>
+                    <p class="text-gray-300 mb-4">Eclipsia Techs provides the following premium services:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                        <div class="service-item">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                                <i class="fas fa-code text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-white">Web Development</h3>
+                                <p class="text-gray-400 text-sm">Custom websites and applications</p>
+                            </div>
+                        </div>
+                        <div class="service-item">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center">
+                                <i class="fas fa-robot text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-white">AI Solutions</h3>
+                                <p class="text-gray-400 text-sm">AI integration and consulting</p>
+                            </div>
+                        </div>
+                        <div class="service-item">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 flex items-center justify-center">
+                                <i class="fas fa-server text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-white">Enterprise Software</h3>
+                                <p class="text-gray-400 text-sm">Scalable business solutions</p>
+                            </div>
+                        </div>
+                        <div class="service-item">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center">
+                                <i class="fas fa-headset text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-white">Tech Consulting</h3>
+                                <p class="text-gray-400 text-sm">Expert technical guidance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Responsibilities -->
+                <div id="user-responsibilities" class="terms-section fade-in-scroll delay-400">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="terms-icon bg-gradient-to-r from-yellow-500 to-yellow-600">
+                            <i class="fas fa-user-shield text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">3. User Responsibilities</h2>
+                    </div>
+                    <p class="text-gray-300 mb-4">As a user of our services, you agree to:</p>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="glass-card p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-user-check text-green-400"></i>
+                                <h3 class="font-semibold text-white">Provide Accurate Information</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Complete and truthful details for service delivery</p>
+                        </div>
+                        <div class="glass-card p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-lock text-blue-400"></i>
+                                <h3 class="font-semibold text-white">Account Security</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Maintain confidentiality of your account credentials</p>
+                        </div>
+                        <div class="glass-card p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-balance-scale text-purple-400"></i>
+                                <h3 class="font-semibold text-white">Lawful Use</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Use services only for legal and ethical purposes</p>
+                        </div>
+                        <div class="glass-card p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-copyright text-yellow-400"></i>
+                                <h3 class="font-semibold text-white">Respect IP Rights</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Honor intellectual property and copyright laws</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payments Section -->
+                <div id="payments-billing" class="terms-section fade-in-scroll delay-500">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="terms-icon bg-gradient-to-r from-green-500 to-green-600">
+                            <i class="fas fa-credit-card text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">4. Payments and Billing</h2>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-green-500/10 rounded-lg">
+                            <i class="fas fa-calendar-check text-green-400"></i>
+                            <span class="text-gray-300">Payments due as specified in project proposals</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-yellow-500/10 rounded-lg">
+                            <i class="fas fa-clock text-yellow-400"></i>
+                            <span class="text-gray-300">Late payments may incur additional fees</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-blue-500/10 rounded-lg">
+                            <i class="fas fa-exchange-alt text-blue-400"></i>
+                            <span class="text-gray-300">Project scope changes may affect pricing</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-purple-500/10 rounded-lg">
+                            <i class="fas fa-file-invoice-dollar text-purple-400"></i>
+                            <span class="text-gray-300">Refund policies outlined in individual agreements</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Intellectual Property -->
+                <div id="intellectual-property" class="terms-section fade-in-scroll delay-600">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="terms-icon bg-gradient-to-r from-purple-500 to-purple-600">
+                            <i class="fas fa-lightbulb text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">5. Intellectual Property</h2>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4 mt-4">
+                        <div class="glass-card p-4 text-center">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-handshake text-white"></i>
+                            </div>
+                            <h3 class="font-semibold text-white mb-2">Client Rights</h3>
+                            <p class="text-gray-400 text-sm">Full rights to deliverables upon final payment</p>
+                        </div>
+                        <div class="glass-card p-4 text-center">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-tools text-white"></i>
+                            </div>
+                            <h3 class="font-semibold text-white mb-2">Our Rights</h3>
+                            <p class="text-gray-400 text-sm">Retains rights to underlying frameworks and tools</p>
+                        </div>
+                        <div class="glass-card p-4 text-center">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-code-branch text-white"></i>
+                            </div>
+                            <h3 class="font-semibold text-white mb-2">Open Source</h3>
+                            <p class="text-gray-400 text-sm">Components follow respective open-source licenses</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liability Section -->
+                <div id="limitation-liability" class="terms-section fade-in-scroll delay-700">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="terms-icon bg-gradient-to-r from-red-500 to-red-600">
+                            <i class="fas fa-balance-scale-left text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">6. Limitation of Liability</h2>
+                    </div>
+                    <div class="bg-red-500/10 border border-red-500/20 p-4 rounded-lg mb-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-exclamation-triangle text-red-400"></i>
+                            <h3 class="font-semibold text-white">Disclaimer</h3>
+                        </div>
+                        <p class="text-gray-300 text-sm">
+                            Eclipsia Techs shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of our services.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                        <i class="fas fa-shield-alt text-blue-400"></i>
+                        <div>
+                            <p class="text-gray-300 text-sm">
+                                <span class="font-semibold">Total liability cap:</span> Amount paid for the specific service causing the claim.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Termination Section -->
+                <div id="termination" class="terms-section fade-in-scroll delay-800">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="terms-icon bg-gradient-to-r from-orange-500 to-orange-600">
+                            <i class="fas fa-power-off text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">7. Termination</h2>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-ban text-orange-400 text-2xl mt-1"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-300">
+                                We may terminate or suspend access to our services immediately, without prior notice, for conduct that we believe violates these Terms or is harmful to other users, us, or third parties, or for any other reason.
+                            </p>
+                            <div class="mt-3 p-3 bg-orange-500/10 rounded-lg">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i class="fas fa-info-circle text-orange-400"></i>
+                                    <span class="text-white font-semibold text-sm">Termination Reasons May Include:</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    <span class="term-badge">Violation of Terms</span>
+                                    <span class="term-badge">Harmful Conduct</span>
+                                    <span class="term-badge">Security Threats</span>
+                                    <span class="term-badge">Non-payment</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Governing Law -->
+                <div id="governing-law" class="terms-section fade-in-scroll delay-900">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="terms-icon bg-gradient-to-r from-indigo-500 to-indigo-600">
+                            <i class="fas fa-gavel text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">8. Governing Law</h2>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-16 h-16 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
+                                <i class="fas fa-globe-africa text-white text-2xl"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-gray-300">
+                                These terms shall be governed by the laws of Nigeria without regard to its conflict of law provisions. Any disputes shall be resolved in the courts of Lagos, Nigeria.
+                            </p>
+                            <div class="mt-2 flex items-center gap-2 text-sm text-gray-400">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Jurisdiction: Lagos, Nigeria</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Changes Section -->
+                <div id="terms-changes" class="terms-section fade-in-scroll delay-1000">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="terms-icon bg-gradient-to-r from-cyan-500 to-cyan-600">
+                            <i class="fas fa-sync-alt text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">9. Changes to Terms</h2>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-cyan-500/10 rounded-lg">
+                            <i class="fas fa-edit text-cyan-400"></i>
+                            <span class="text-gray-300">We reserve the right to modify these terms at any time</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-cyan-500/10 rounded-lg">
+                            <i class="fas fa-bell text-cyan-400"></i>
+                            <span class="text-gray-300">Notification of changes posted on this page</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-cyan-500/10 rounded-lg">
+                            <i class="fas fa-calendar-alt text-cyan-400"></i>
+                            <span class="text-gray-300">"Last updated" date revised accordingly</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Section -->
+                <div id="contact-information" class="terms-section fade-in-scroll delay-1100">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="terms-icon bg-gradient-to-r from-pink-500 to-pink-600">
+                            <i class="fas fa-headset text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">10. Contact Information</h2>
+                    </div>
+                    <div class="glass-card p-6">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400 to-green-400 flex items-center justify-center">
+                                <i class="fas fa-envelope-open-text text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Terms Support</h3>
+                                <p class="text-gray-300">Questions about these Terms of Service?</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <a href="mailto:eclipsiatechs@gmail.com" class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 w-full justify-center">
+                                <i class="fas fa-paper-plane"></i>
+                                eclipsiatechs@gmail.com
+                            </a>
+                            <div class="text-center mt-2">
+                                <p class="text-gray-400 text-sm">
+                                    <i class="fas fa-clock mr-2"></i>
+                                    We typically respond within 24 hours
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Last Updated Notice -->
+                <div class="mt-10 pt-6 border-t border-gray-700/50 text-center">
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-calendar text-blue-400"></i>
+                            <span class="text-gray-400">Last Updated: December 2024</span>
+                        </div>
+                        <div class="hidden md:block text-gray-400">•</div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-file-contract text-green-400"></i>
+                            <span class="text-gray-400">Terms Version: 3.0</span>
+                        </div>
+                        <div class="hidden md:block text-gray-400">•</div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-eye text-purple-400"></i>
+                            <a href="privacy-policy.html" class="text-gray-400 hover:text-white transition-colors">
+                                View Privacy Policy
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Navigation -->
+            <div class="glass-card p-6 mt-10 fade-in-scroll delay-1200">
+                <h3 class="text-xl font-bold text-white mb-4 text-center">Quick Navigation</h3>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    <a href="#agreement-terms" class="text-center px-2 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-handshake text-blue-400 mb-1"></i>
+                        <p class="text-xs">Agreement</p>
+                    </a>
+                    <a href="#user-responsibilities" class="text-center px-2 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-user-shield text-yellow-400 mb-1"></i>
+                        <p class="text-xs">Responsibilities</p>
+                    </a>
+                    <a href="#payments-billing" class="text-center px-2 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-credit-card text-green-400 mb-1"></i>
+                        <p class="text-xs">Payments</p>
+                    </a>
+                    <a href="#limitation-liability" class="text-center px-2 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-balance-scale text-red-400 mb-1"></i>
+                        <p class="text-xs">Liability</p>
+                    </a>
+                    <a href="#contact-information" class="text-center px-2 py-2 bg-gray-800/30 rounded-lg hover:bg-gray-700/50 transition-colors">
+                        <i class="fas fa-headset text-pink-400 mb-1"></i>
+                        <p class="text-xs">Contact</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 border-t border-gray-800 py-12 px-4 fade-in-scroll delay-500">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center">
+                <div class="text-2xl font-bold tracking-tighter text-white mb-4">ECLIPSIA<span class="text-brand-400">.</span></div>
+                <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
+                    Building trust through transparent and fair service terms.
+                </p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="https://www.tiktok.com/@eclipsia_techs?_t=ZT-90qyL9beSYn&_r=1" class="text-gray-400 hover:text-[#ff0050] transition-colors duration-300">
+                        <i class="fab fa-tiktok text-xl"></i>
+                    </a>
+                    <a href="https://youtube.com/@eclipsiatechs?si=Vk82qE300bgybJey" class="text-gray-400 hover:text-[#ff0000] transition-colors duration-300">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://t.me/eclipsia_techs" class="text-gray-400 hover:text-[#0088cc] transition-colors duration-300">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                </div>
+                <div class="text-gray-400 text-sm">
+                    © 2025 Eclipsia Techs. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-8 right-8 bg-gradient-to-r from-blue-500 to-green-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 opacity-0 transform translate-y-10 z-40">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        // --- Enhanced Scroll Animations ---
+        let scrollElements = [];
+        let ticking = false;
+
+        function initScrollAnimations() {
+            scrollElements = Array.from(document.querySelectorAll('.fade-in-scroll'));
+            
+            // Initial check on load
+            checkElements();
+            
+            // Set up scroll listener
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        checkElements();
+                        updateScrollProgress();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            
+            window.addEventListener('resize', checkElements);
+        }
+
+        function checkElements() {
+            const windowHeight = window.innerHeight;
+            const triggerPoint = windowHeight * 0.85;
+            
+            scrollElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                
+                if (elementTop < triggerPoint) {
+                    element.classList.add('visible');
+                } else {
+                    element.classList.remove('visible');
+                }
+            });
+        }
+
+        // --- Scroll Progress Bar ---
+        function updateScrollProgress() {
+            const progressBar = document.querySelector('.scroll-progress');
+            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            if (progressBar) {
+                progressBar.style.width = scrolled + '%';
+            }
+        }
+
+        // --- Scroll to Top Button ---
+        const scrollToTopButton = document.getElementById('scroll-to-top');
+        if (scrollToTopButton) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopButton.classList.remove('opacity-0', 'translate-y-10');
+                    scrollToTopButton.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    scrollToTopButton.classList.remove('opacity-100', 'translate-y-0');
+                    scrollToTopButton.classList.add('opacity-0', 'translate-y-10');
+                }
+            });
+
+            scrollToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // --- Smooth Scrolling for Anchor Links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // --- Initialize Everything ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initScrollAnimations();
+            
+            // Add smooth reveal for initial load
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-scroll').forEach((el, index) => {
+                    setTimeout(() => {
+                        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+                            el.classList.add('visible');
+                        }
+                    }, index * 80);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>

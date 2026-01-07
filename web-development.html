@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development - Eclipsia Techs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            900: '#050505',
+                            800: '#0a0a0a',
+                            700: '#121212',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'gradient-y': 'gradient-y 15s ease infinite',
+                        'gradient-xy': 'gradient-xy 15s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'gradient-y': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'center top'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'center center'
+                            }
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'gradient-xy': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': '0% 0%'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': '100% 100%'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- Premium Scrollbar Design --- */
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, 
+                rgba(5, 5, 5, 0.8) 0%, 
+                rgba(15, 23, 42, 0.6) 50%, 
+                rgba(5, 5, 5, 0.8) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, 
+                #38bdf8, 
+                #818cf8, 
+                #c084fc, 
+                #f472b6, 
+                #38bdf8);
+            background-size: 400% 400%;
+            border-radius: 10px;
+            border: 2px solid rgba(5, 5, 5, 0.8);
+            box-shadow: 
+                0 0 10px rgba(56, 189, 248, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+            animation: gradient-xy 3s ease infinite;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, 
+                #60a5fa, 
+                #a78bfa, 
+                #d8b4fe, 
+                #f9a8d4, 
+                #60a5fa);
+            background-size: 400% 400%;
+            box-shadow: 
+                0 0 15px rgba(56, 189, 248, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.2);
+            animation: gradient-xy 2s ease infinite;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #38bdf8 #050505;
+        }
+
+        /* --- Moving Background Effect --- */
+        .moving-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(240, 171, 252, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, rgba(52, 211, 153, 0.1) 0%, transparent 50%);
+            animation: gradient-xy 20s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        .moving-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, 
+                    transparent 30%, 
+                    rgba(56, 189, 248, 0.05) 50%, 
+                    transparent 70%);
+            animation: gradient-x 25s linear infinite;
+        }
+
+        /* --- Glassmorphism Card --- */
+        .glass-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 20px rgba(56, 189, 248, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        /* --- Enhanced Fade Animations --- */
+        .fade-in-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .fade-in-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .fade-in-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* --- Back Button Style --- */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* --- Web Dev Specific Styles --- */
+        .tech-tag {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .process-step {
+            position: relative;
+            padding: 2rem;
+        }
+
+        .process-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(56, 189, 248, 0.2);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        /* --- Web Dev Hero --- */
+        .hero-gradient {
+            background: linear-gradient(135deg, 
+                rgba(56, 189, 248, 0.1) 0%,
+                rgba(139, 92, 246, 0.1) 50%,
+                rgba(52, 211, 153, 0.1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- Service Card Styles --- */
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .service-description {
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .service-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .service-features span {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        /* --- CTA Buttons --- */
+        .web-dev-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(45deg, #38bdf8, #8b5cf6);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .web-dev-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .web-dev-cta:hover::before {
+            left: 100%;
+        }
+
+        .web-dev-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.4);
+        }
+
+        .secondary-cta {
+            background: linear-gradient(45deg, #6b7280, #4b5563);
+        }
+
+        .secondary-cta:hover {
+            box-shadow: 0 15px 30px rgba(107, 114, 128, 0.4);
+        }
+
+        /* Progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        /* Project Image Container */
+        .project-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .project-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .glass-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        /* Staggered delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Moving Gradient Background -->
+    <div class="moving-bg"></div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-dark-900/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-xl font-bold tracking-tighter text-white hover:text-brand-400 transition-colors">ECLIPSIA<span class="text-brand-400">.</span></a>
+                </div>
+                
+                <!-- Back Button -->
+                <a href="main.html#services" class="back-btn fade-in-right">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Services</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-24 px-4 pt-36 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center">
+                <div class="relative inline-block mb-10">
+                    <i class="fas fa-code text-8xl md:text-9xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400"></i>
+                </div>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tight">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
+                        Web Development
+                    </span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-10 text-gray-300 max-w-3xl mx-auto leading-relaxed fade-in-scroll">
+                    High-performance, responsive websites tailored to your business needs with cutting-edge technologies and unparalleled user experiences.
+                </p>
+                <div class="fade-in-scroll delay-200">
+                    <a href="main.html#contact" class="web-dev-cta">
+                        <span>Start Your Project</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 fade-in-scroll">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
+                        Our Tech Stack
+                    </span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto fade-in-scroll delay-100">
+                    We use the latest technologies to build fast, scalable, and maintainable web applications.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- React & Vue.js -->
+                <div class="glass-card p-8 text-center group fade-in-scale">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center mx-auto mb-6">
+                        <i class="fab fa-react text-white text-3xl"></i>
+                    </div>
+                    <h3 class="service-title">React & Vue.js</h3>
+                    <p class="service-description">
+                        Modern frontend frameworks for building interactive and dynamic user interfaces with component-based architecture.
+                    </p>
+                    <div class="service-features">
+                        <span>Component-Based</span>
+                        <span>State Management</span>
+                        <span>Virtual DOM</span>
+                        <span>SPA</span>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-700/30">
+                        <p class="text-blue-400 text-sm">
+                            <i class="fas fa-bolt"></i>
+                            60+ Projects Built
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Node.js -->
+                <div class="glass-card p-8 text-center group fade-in-scale delay-100">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center mx-auto mb-6">
+                        <i class="fab fa-node-js text-white text-3xl"></i>
+                    </div>
+                    <h3 class="service-title">Node.js</h3>
+                    <p class="service-description">
+                        Scalable backend solutions with fast runtime and extensive package ecosystem for real-time applications.
+                    </p>
+                    <div class="service-features">
+                        <span>Fast Execution</span>
+                        <span>NPM Ecosystem</span>
+                        <span>Real-time Apps</span>
+                        <span>Microservices</span>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-700/30">
+                        <p class="text-green-400 text-sm">
+                            <i class="fas fa-server"></i>
+                            99.9% Uptime
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Cloud Integration -->
+                <div class="glass-card p-8 text-center group fade-in-scale delay-200">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-cloud text-white text-3xl"></i>
+                    </div>
+                    <h3 class="service-title">Cloud Integration</h3>
+                    <p class="service-description">
+                        Seamless integration with cloud platforms for scalability, reliability, and cost-effective hosting solutions.
+                    </p>
+                    <div class="service-features">
+                        <span>AWS & Azure</span>
+                        <span>Serverless</span>
+                        <span>Auto-scaling</span>
+                        <span>CDN</span>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-700/30">
+                        <p class="text-purple-400 text-sm">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            Global Deployment
+                        </p>
+                    </div>
+                </div>
+
+                <!-- PWA -->
+                <div class="glass-card p-8 text-center group fade-in-scale delay-300">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-mobile-alt text-white text-3xl"></i>
+                    </div>
+                    <h3 class="service-title">PWA</h3>
+                    <p class="service-description">
+                        Progressive Web Apps that work offline, provide push notifications, and deliver native app-like experiences.
+                    </p>
+                    <div class="service-features">
+                        <span>Offline Support</span>
+                        <span>Push Notifications</span>
+                        <span>App-like Experience</span>
+                        <span>Installable</span>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-700/30">
+                        <p class="text-yellow-400 text-sm">
+                            <i class="fas fa-rocket"></i>
+                            3x Faster Load Times
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Technologies -->
+            <div class="mt-16 fade-in-scroll delay-400">
+                <div class="glass-card p-8">
+                    <h3 class="text-2xl font-bold text-white mb-6 text-center">Additional Technologies</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                        <div class="text-center p-4 bg-gray-800/30 rounded-lg">
+                            <i class="fab fa-python text-blue-400 text-2xl mb-2"></i>
+                            <p class="text-white text-sm">Python</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/30 rounded-lg">
+                            <i class="fab fa-php text-purple-400 text-2xl mb-2"></i>
+                            <p class="text-white text-sm">PHP</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/30 rounded-lg">
+                            <i class="fab fa-docker text-cyan-400 text-2xl mb-2"></i>
+                            <p class="text-white text-sm">Docker</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/30 rounded-lg">
+                            <i class="fab fa-aws text-yellow-400 text-2xl mb-2"></i>
+                            <p class="text-white text-sm">AWS</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/30 rounded-lg">
+                            <i class="fab fa-git-alt text-red-400 text-2xl mb-2"></i>
+                            <p class="text-white text-sm">Git</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/30 rounded-lg">
+                            <i class="fas fa-database text-green-400 text-2xl mb-2"></i>
+                            <p class="text-white text-sm">SQL/NoSQL</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="py-20 px-4 bg-gradient-to-b from-transparent to-gray-900/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 fade-in-scroll">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                        Our Work
+                    </span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto fade-in-scroll delay-100">
+                    Explore some of our recent web development projects and templates that showcase our expertise.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="glass-card p-6 group fade-in-scale">
+                    <div class="project-image bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <i class="fas fa-shopping-cart text-white text-6xl"></i>
+                        <div class="project-overlay">
+                            <a href="#" class="web-dev-cta text-sm px-4 py-2">
+                                <span>View Live</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">E-Commerce Platform</h3>
+                    <p class="text-gray-300 mb-4 text-sm">Modern e-commerce solution with React, Node.js, and Stripe integration for seamless online shopping.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">Stripe</span>
+                        <span class="tech-tag">Redux</span>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-700/30">
+                        <p class="text-blue-400 text-sm">
+                            <i class="fas fa-chart-line"></i>
+                            40% Increase in Conversions
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="glass-card p-6 group fade-in-scale delay-100">
+                    <div class="project-image bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center">
+                        <i class="fas fa-chart-line text-white text-6xl"></i>
+                        <div class="project-overlay">
+                            <a href="#" class="web-dev-cta text-sm px-4 py-2">
+                                <span>View Live</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Business Analytics Dashboard</h3>
+                    <p class="text-gray-300 mb-4 text-sm">Real-time analytics dashboard with Vue.js and WebSocket connections for live data visualization.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag">Vue.js</span>
+                        <span class="tech-tag">Express</span>
+                        <span class="tech-tag">Socket.io</span>
+                        <span class="tech-tag">Chart.js</span>
+                        <span class="tech-tag">D3.js</span>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-700/30">
+                        <p class="text-green-400 text-sm">
+                            <i class="fas fa-bolt"></i>
+                            Real-time Updates
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="glass-card p-6 group fade-in-scale delay-200">
+                    <div class="project-image bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                        <i class="fas fa-newspaper text-white text-6xl"></i>
+                        <div class="project-overlay">
+                            <a href="#" class="web-dev-cta text-sm px-4 py-2">
+                                <span>View Live</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">News Portal</h3>
+                    <p class="text-gray-300 mb-4 text-sm">Content management system with Next.js and headless CMS integration for modern publishing.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag">Next.js</span>
+                        <span class="tech-tag">Strapi</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">AWS S3</span>
+                        <span class="tech-tag">SSR</span>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-700/30">
+                        <p class="text-orange-400 text-sm">
+                            <i class="fas fa-users"></i>
+                            50k+ Monthly Visitors
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="glass-card p-6 group fade-in-scale delay-300">
+                    <div class="project-image bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-6xl"></i>
+                        <div class="project-overlay">
+                            <a href="#" class="web-dev-cta text-sm px-4 py-2">
+                                <span>View Live</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Learning Management System</h3>
+                    <p class="text-gray-300 mb-4 text-sm">Educational platform with video streaming, progress tracking, and interactive learning modules.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Django</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">Video.js</span>
+                        <span class="tech-tag">WebRTC</span>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-700/30">
+                        <p class="text-purple-400 text-sm">
+                            <i class="fas fa-graduation-cap"></i>
+                            10k+ Students Enrolled
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="glass-card p-6 group fade-in-scale delay-400">
+                    <div class="project-image bg-gradient-to-br from-teal-500 to-blue-600 flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-white text-6xl"></i>
+                        <div class="project-overlay">
+                            <a href="#" class="web-dev-cta text-sm px-4 py-2">
+                                <span>View Live</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Booking Platform</h3>
+                    <p class="text-gray-300 mb-4 text-sm">Appointment scheduling system with calendar integration and automated reminders.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag">Vue.js</span>
+                        <span class="tech-tag">Laravel</span>
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">FullCalendar</span>
+                        <span class="tech-tag">Twilio</span>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-700/30">
+                        <p class="text-teal-400 text-sm">
+                            <i class="fas fa-calendar-check"></i>
+                            95% Booking Success Rate
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="glass-card p-6 group fade-in-scale delay-500">
+                    <div class="project-image bg-gradient-to-br from-yellow-500 to-red-600 flex items-center justify-center">
+                        <i class="fas fa-music text-white text-6xl"></i>
+                        <div class="project-overlay">
+                            <a href="#" class="web-dev-cta text-sm px-4 py-2">
+                                <span>View Live</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Music Streaming App</h3>
+                    <p class="text-gray-300 mb-4 text-sm">Audio streaming platform with playlist management, recommendations, and offline playback.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-tag">React Native</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">AWS CloudFront</span>
+                        <span class="tech-tag">Redis</span>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-700/30">
+                        <p class="text-yellow-400 text-sm">
+                            <i class="fas fa-music"></i>
+                            1M+ Streams Monthly
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View More Button -->
+            <div class="text-center mt-12 fade-in-scroll delay-300">
+                <button onclick="showNotification('More projects coming soon!', 'info')" class="web-dev-cta secondary-cta">
+                    <span>View More Projects</span>
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-in-scroll">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
+                        Our Process
+                    </span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto fade-in-scroll delay-100">
+                    We follow a structured approach to deliver exceptional web solutions that exceed expectations.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="glass-card p-8 text-center process-step fade-in-scale">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
+                        <i class="fas fa-lightbulb text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Discovery</h3>
+                    <p class="text-gray-300 mb-4">We analyze your requirements, define project goals, and create a detailed roadmap.</p>
+                    <div class="mt-4">
+                        <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm">
+                            1-2 Weeks
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="glass-card p-8 text-center process-step fade-in-scale delay-100">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center">
+                        <i class="fas fa-pencil-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Design</h3>
+                    <p class="text-gray-300 mb-4">We create wireframes, design mockups, and prototypes for your approval and feedback.</p>
+                    <div class="mt-4">
+                        <span class="inline-block px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm">
+                            2-3 Weeks
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="glass-card p-8 text-center process-step fade-in-scale delay-200">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                        <i class="fas fa-code text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Development</h3>
+                    <p class="text-gray-300 mb-4">We build your website using modern technologies, best practices, and agile methodology.</p>
+                    <div class="mt-4">
+                        <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm">
+                            4-8 Weeks
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="glass-card p-8 text-center process-step fade-in-scale delay-300">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center">
+                        <i class="fas fa-rocket text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Launch & Support</h3>
+                    <p class="text-gray-300 mb-4">We deploy, test thoroughly, and provide ongoing support and maintenance.</p>
+                    <div class="mt-4">
+                        <span class="inline-block px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-sm">
+                            Ongoing
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 bg-gradient-to-b from-transparent to-gray-900/30">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="glass-card p-12 fade-in-scroll">
+                <div class="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-green-500 flex items-center justify-center mx-auto mb-8">
+                    <i class="fas fa-code text-white text-4xl"></i>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black mb-6">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
+                        Ready to Build Your Website?
+                    </span>
+                </h2>
+                <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                    Let's create a stunning, high-performance website that drives results for your business and exceeds expectations.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="main.html#contact" class="web-dev-cta">
+                        <span>Start Your Project</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="main.html#services" class="web-dev-cta secondary-cta">
+                        <span>View All Services</span>
+                        <i class="fas fa-grid"></i>
+                    </a>
+                </div>
+                <p class="text-gray-400 mt-8 text-sm">
+                    <i class="fas fa-headset mr-2"></i>
+                    Free consultation and project estimation included
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <div class="py-12 px-4 fade-in-scroll delay-400">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="glass-card p-6 text-center">
+                    <div class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400 mb-2">150+</div>
+                    <div class="text-gray-400">Websites Built</div>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <div class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400 mb-2">99.9%</div>
+                    <div class="text-gray-400">Client Satisfaction</div>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <div class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400 mb-2">24/7</div>
+                    <div class="text-gray-400">Support</div>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <div class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400 mb-2">30 Days</div>
+                    <div class="text-gray-400">Average Delivery</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 border-t border-gray-800 py-12 px-4 fade-in-scroll delay-500">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center">
+                <div class="text-2xl font-bold tracking-tighter text-white mb-4">ECLIPSIA<span class="text-brand-400">.</span></div>
+                <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
+                    Premium web development services for businesses of all sizes.
+                </p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="https://www.tiktok.com/@eclipsia_techs?_t=ZT-90qyL9beSYn&_r=1" class="text-gray-400 hover:text-[#ff0050] transition-colors duration-300">
+                        <i class="fab fa-tiktok text-xl"></i>
+                    </a>
+                    <a href="https://youtube.com/@eclipsiatechs?si=Vk82qE300bgybJey" class="text-gray-400 hover:text-[#ff0000] transition-colors duration-300">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://t.me/eclipsia_techs" class="text-gray-400 hover:text-[#0088cc] transition-colors duration-300">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                </div>
+                <div class="text-gray-400">
+                    © 2025 Eclipsia Techs. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-8 right-8 bg-gradient-to-r from-blue-500 to-green-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 opacity-0 transform translate-y-10 z-40">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+
+    <script>
+        // --- Enhanced Scroll Animations ---
+        let scrollElements = [];
+        let ticking = false;
+
+        function initScrollAnimations() {
+            scrollElements = Array.from(document.querySelectorAll('.fade-in-scroll, .fade-in-scale'));
+            
+            // Initial check on load
+            checkElements();
+            
+            // Set up scroll listener
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        checkElements();
+                        updateScrollProgress();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            
+            window.addEventListener('resize', checkElements);
+        }
+
+        function checkElements() {
+            const windowHeight = window.innerHeight;
+            const triggerPoint = windowHeight * 0.85;
+            
+            scrollElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                
+                if (elementTop < triggerPoint) {
+                    element.classList.add('visible');
+                } else {
+                    element.classList.remove('visible');
+                }
+            });
+        }
+
+        // --- Scroll Progress Bar ---
+        function updateScrollProgress() {
+            const progressBar = document.querySelector('.scroll-progress');
+            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            if (progressBar) {
+                progressBar.style.width = scrolled + '%';
+            }
+        }
+
+        // --- Scroll to Top Button ---
+        const scrollToTopButton = document.getElementById('scroll-to-top');
+        if (scrollToTopButton) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopButton.classList.remove('opacity-0', 'translate-y-10');
+                    scrollToTopButton.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    scrollToTopButton.classList.remove('opacity-100', 'translate-y-0');
+                    scrollToTopButton.classList.add('opacity-0', 'translate-y-10');
+                }
+            });
+
+            scrollToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // --- Notification System ---
+        function showNotification(message, type = 'info') {
+            const toast = document.getElementById('notification-toast');
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+            
+            toastMessage.textContent = message;
+            
+            let iconClass, bgColor;
+            switch(type) {
+                case 'success':
+                    iconClass = 'fas fa-check-circle text-green-400';
+                    bgColor = 'bg-green-500/20 border-green-500/30';
+                    break;
+                case 'error':
+                    iconClass = 'fas fa-exclamation-circle text-red-400';
+                    bgColor = 'bg-red-500/20 border-red-500/30';
+                    break;
+                case 'warning':
+                    iconClass = 'fas fa-exclamation-triangle text-yellow-400';
+                    bgColor = 'bg-yellow-500/20 border-yellow-500/30';
+                    break;
+                default:
+                    iconClass = 'fas fa-info-circle text-blue-400';
+                    bgColor = 'bg-blue-500/20 border-blue-500/30';
+            }
+            
+            toastIcon.innerHTML = `<i class="${iconClass} text-lg"></i>`;
+            toast.className = `fixed top-4 right-4 z-50 max-w-sm w-full ${bgColor} border rounded-lg shadow-lg transform transition-transform duration-300 translate-x-0`;
+            
+            setTimeout(hideNotification, 5000);
+        }
+        
+        function hideNotification() {
+            const toast = document.getElementById('notification-toast');
+            toast.classList.remove('translate-x-0');
+            toast.classList.add('translate-x-full');
+        }
+
+        // --- Initialize Everything ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initScrollAnimations();
+            
+            // Add smooth reveal for initial load
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-scroll, .fade-in-scale').forEach((el, index) => {
+                    setTimeout(() => {
+                        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+                            el.classList.add('visible');
+                        }
+                    }, index * 100);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
