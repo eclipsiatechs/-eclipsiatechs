@@ -174,7 +174,7 @@
                 -10px 0 30px rgba(0, 0, 0, 0.5),
                 inset 1px 0 0 rgba(255, 255, 255, 0.05);
             transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
+            z-index: 9999;
             overflow-y: auto;
         }
 
@@ -192,7 +192,8 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            z-index: 999;
+            z-index: 9998;
+            backdrop-filter: blur(3px);
         }
 
         .mobile-sidebar-overlay.active {
@@ -238,13 +239,13 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        /* Hamburger Menu Animation */
+        /* Hamburger Menu Animation - FIXED Z-INDEX */
         .hamburger {
             width: 30px;
             height: 20px;
             position: relative;
             cursor: pointer;
-            z-index: 1001;
+            z-index: 10000;
             transition: all 0.3s ease;
         }
 
@@ -296,6 +297,11 @@
         html {
             scroll-behavior: smooth;
             scrollbar-gutter: stable;
+        }
+
+        /* Prevent body scroll when sidebar is open */
+        body.no-scroll {
+            overflow: hidden;
         }
 
         /* --- Moving Background Effect --- */
@@ -1220,9 +1226,9 @@
             
             // Prevent body scroll when sidebar is open
             if (sidebar.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
+                document.body.classList.add('no-scroll');
             } else {
-                document.body.style.overflow = 'auto';
+                document.body.classList.remove('no-scroll');
             }
         }
 
@@ -1234,7 +1240,7 @@
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
             hamburger.classList.remove('active');
-            document.body.style.overflow = 'auto';
+            document.body.classList.remove('no-scroll');
         }
 
         // Close sidebar with escape key
@@ -1246,6 +1252,11 @@
 
         // Close sidebar when clicking overlay
         document.getElementById('sidebar-overlay').addEventListener('click', closeMobileSidebar);
+
+        // Close sidebar when clicking any navigation link inside sidebar
+        document.querySelectorAll('#mobile-sidebar a').forEach(link => {
+            link.addEventListener('click', closeMobileSidebar);
+        });
 
         // --- Enhanced Three.js Background ---
         let scene, camera, renderer, particles, geometry, material;
