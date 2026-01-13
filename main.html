@@ -160,23 +160,23 @@
         }
 
         /* Mobile Sidebar Styles - Matching Main Design */
-      .mobile-sidebar {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 200px;  /* Reduced from 240px to 200px */
-    height: 100vh;
-    background: rgba(10, 15, 22, 0.98);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-left: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 
-        -10px 0 30px rgba(0, 0, 0, 0.5),
-        inset 1px 0 0 rgba(255, 255, 255, 0.05);
-    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 9999;
-    overflow-y: auto;
-}
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: rgba(10, 15, 22, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                -10px 0 30px rgba(0, 0, 0, 0.5),
+                inset 1px 0 0 rgba(255, 255, 255, 0.05);
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999;
+            overflow-y: auto;
+        }
 
         .mobile-sidebar.active {
             right: 0;
@@ -302,6 +302,38 @@
         /* Prevent body scroll when sidebar is open */
         body.no-scroll {
             overflow: hidden;
+        }
+
+        /* --- Fixed Stats Container and Cards --- */
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            max-width: 250px;
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive behavior for screens smaller than 480px */
+        @media (max-width: 480px) {
+            .stats-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                min-width: 100%;
+                max-width: 100%;
+                margin: 0;
+            }
         }
 
         /* --- Moving Background Effect --- */
@@ -719,21 +751,21 @@
                 </a>
             </div>
 
-            <!-- Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto mt-16 pt-8 border-t border-gray-700/50">
-                <div class="glass-card rounded-xl p-6 text-center fade-in-scale delay-100">
+            <!-- Stats - Fixed for mobile overflow -->
+            <div class="stats-container mt-16 pt-8 border-t border-gray-700/50">
+                <div class="stat-card glass-card rounded-xl p-6 text-center fade-in-scale delay-100">
                     <div class="stat-number text-3xl font-black text-white mb-2">50+</div>
                     <div class="stat-label text-gray-400 text-sm">Projects</div>
                 </div>
-                <div class="glass-card rounded-xl p-6 text-center fade-in-scale delay-200">
+                <div class="stat-card glass-card rounded-xl p-6 text-center fade-in-scale delay-200">
                     <div class="stat-number text-3xl font-black text-white mb-2">100%</div>
                     <div class="stat-label text-gray-400 text-sm">Success Rate</div>
                 </div>
-                <div class="glass-card rounded-xl p-6 text-center fade-in-scale delay-300">
+                <div class="stat-card glass-card rounded-xl p-6 text-center fade-in-scale delay-300">
                     <div class="stat-number text-3xl font-black text-white mb-2">24/7</div>
                     <div class="stat-label text-gray-400 text-sm">Support</div>
                 </div>
-                <div class="glass-card rounded-xl p-6 text-center fade-in-scale delay-400">
+                <div class="stat-card glass-card rounded-xl p-6 text-center fade-in-scale delay-400">
                     <div class="stat-number text-3xl font-black text-white mb-2">10+</div>
                     <div class="stat-label text-gray-400 text-sm">community</div>
                 </div>
@@ -944,16 +976,16 @@
             <!-- Community Stats -->
             <div class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-2xl mx-auto mt-16">
                 <div class="glass-card rounded-xl p-6 text-center fade-in-left delay-400">
-                    <div class="stat-number text-2xl font-black text-white mb-2">3K+</div>
-                    <div class="stat-label text-gray-400 text-sm">Followers</div>
+                    <div class="text-2xl font-black text-white mb-2">3K+</div>
+                    <div class="text-gray-400 text-sm">Followers</div>
                 </div>
                 <div class="glass-card rounded-xl p-6 text-center fade-in-scroll delay-500">
-                    <div class="stat-number text-2xl font-black text-white mb-2">1k+</div>
-                    <div class="stat-label text-gray-400 text-sm">Views</div>
+                    <div class="text-2xl font-black text-white mb-2">1k+</div>
+                    <div class="text-gray-400 text-sm">Views</div>
                 </div>
                 <div class="glass-card rounded-xl p-6 text-center fade-in-right delay-600">
-                    <div class="stat-number text-2xl font-black text-white mb-2">4K+</div>
-                    <div class="stat-label text-gray-400 text-sm">Community</div>
+                    <div class="text-2xl font-black text-white mb-2">4K+</div>
+                    <div class="text-gray-400 text-sm">Community</div>
                 </div>
             </div>
         </div>
@@ -1561,4 +1593,3 @@
     </script>
 </body>
 </html>
-
