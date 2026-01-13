@@ -160,23 +160,23 @@
         }
 
         /* Mobile Sidebar Styles - Matching Main Design */
-        .mobile-sidebar {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 280px;
-            height: 100vh;
-            background: rgba(10, 15, 22, 0.98);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-left: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 
-                -10px 0 30px rgba(0, 0, 0, 0.5),
-                inset 1px 0 0 rgba(255, 255, 255, 0.05);
-            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 9999;
-            overflow-y: auto;
-        }
+      .mobile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 200px;  /* Reduced from 240px to 200px */
+    height: 100vh;
+    background: rgba(10, 15, 22, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 
+        -10px 0 30px rgba(0, 0, 0, 0.5),
+        inset 1px 0 0 rgba(255, 255, 255, 0.05);
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+    overflow-y: auto;
+}
 
         .mobile-sidebar.active {
             right: 0;
@@ -1561,3 +1561,4 @@
     </script>
 </body>
 </html>
+
