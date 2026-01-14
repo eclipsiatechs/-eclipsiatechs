@@ -79,62 +79,87 @@
         }
     </script>
 
-   <style>
-        /* --- 1. CORE RESET & BASE --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            scrollbar-gutter: stable;
-        }
-
+    <style>
         body {
             background-color: #050505;
             color: white;
             overflow-x: hidden;
             min-height: 100vh;
-            font-family: 'Inter', -apple-system, sans-serif;
         }
 
-        body.no-scroll {
-            overflow: hidden;
-        }
-
-        /* --- 2. PREMIUM SCROLLBAR --- */
+        /* --- Enhanced Premium Scrollbar Design --- */
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 14px;
+            height: 14px;
             background: transparent;
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(5, 5, 5, 0.95);
+            background: linear-gradient(180deg, 
+                rgba(5, 5, 5, 0.95) 0%, 
+                rgba(15, 23, 42, 0.7) 50%, 
+                rgba(5, 5, 5, 0.95) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.6),
+                0 0 10px rgba(56, 189, 248, 0.1);
+            margin: 2px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #38bdf8, #818cf8, #c084fc, #38bdf8);
+            background: linear-gradient(45deg, 
+                #38bdf8, 
+                #818cf8, 
+                #c084fc, 
+                #f472b6, 
+                #38bdf8);
             background-size: 400% 400%;
             border-radius: 10px;
             border: 2px solid rgba(5, 5, 5, 0.9);
+            box-shadow: 
+                0 0 15px rgba(56, 189, 248, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
             animation: gradient-xy 3s ease infinite;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* --- 3. ANIMATION KEYFRAMES (The missing part) --- */
-        @keyframes gradient-xy {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, 
+                #60a5fa, 
+                #a78bfa, 
+                #d8b4fe, 
+                #f9a8d4, 
+                #60a5fa);
+            background-size: 400% 400%;
+            box-shadow: 
+                0 0 20px rgba(56, 189, 248, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+            border-color: rgba(5, 5, 5, 0.95);
+            transform: scaleX(1.05);
+            animation: gradient-xy 1.5s ease infinite;
         }
 
-        @keyframes gradient-x {
-            0% { transform: translateX(-10%); }
-            100% { transform: translateX(10%); }
+        ::-webkit-scrollbar-thumb:active {
+            background: linear-gradient(45deg, 
+                #0ea5e9, 
+                #6366f1, 
+                #a855f7, 
+                #db2777, 
+                #0ea5e9);
+            box-shadow: 
+                0 0 25px rgba(56, 189, 248, 0.8),
+                inset 0 2px 0 rgba(255, 255, 255, 0.25);
         }
 
-        /* --- 4. MOBILE SIDEBAR & OVERLAY --- */
+        ::-webkit-scrollbar-corner {
+            background: rgba(5, 5, 5, 0.9);
+            border-radius: 0 0 10px 0;
+        }
+
+        /* Mobile Sidebar Styles - Matching Main Design */
         .mobile-sidebar {
             position: fixed;
             top: 0;
@@ -145,12 +170,17 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-left: 1px solid rgba(255, 255, 255, 0.08);
-            z-index: 9999;
+            box-shadow: 
+                -10px 0 30px rgba(0, 0, 0, 0.5),
+                inset 1px 0 0 rgba(255, 255, 255, 0.05);
             transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 80px 20px;
+            z-index: 1000;
+            overflow-y: auto;
         }
 
-        .mobile-sidebar.active { right: 0; }
+        .mobile-sidebar.active {
+            right: 0;
+        }
 
         .mobile-sidebar-overlay {
             position: fixed;
@@ -162,7 +192,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            z-index: 9998;
+            z-index: 999;
             backdrop-filter: blur(3px);
         }
 
@@ -171,15 +201,56 @@
             visibility: visible;
         }
 
-        /* --- 5. HAMBURGER --- */
+        /* Navigation Items - Matching Main Design */
+        .sidebar-nav-item {
+            position: relative;
+            transition: all 0.25s ease;
+            color: #94a3b8;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-nav-item:hover {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        .sidebar-nav-item.active {
+            color: #ffffff;
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.12) 0%, transparent 100%);
+        }
+
+        .sidebar-nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 15%;
+            height: 70%;
+            width: 4px;
+            background: #38bdf8;
+            box-shadow: 0 0 15px #38bdf8;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Glassmorphism Effect for Sidebar */
+        .sidebar-glass {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Hamburger Menu Animation */
         .hamburger {
             width: 30px;
             height: 20px;
-            position: fixed;
-            top: 25px;
-            right: 25px;
+            position: relative;
             cursor: pointer;
-            z-index: 10000;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover {
+            transform: scale(1.1);
         }
 
         .hamburger span {
@@ -187,19 +258,53 @@
             position: absolute;
             height: 2px;
             width: 100%;
-            background: white;
+            background: #ffffff;
+            border-radius: 2px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
             transition: .25s ease-in-out;
         }
 
-        .hamburger span:nth-child(1) { top: 0; }
-        .hamburger span:nth-child(2) { top: 9px; }
-        .hamburger span:nth-child(3) { top: 18px; }
+        .hamburger span:nth-child(1) {
+            top: 0px;
+        }
 
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg); top: 9px; }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg); top: 9px; }
+        .hamburger span:nth-child(2) {
+            top: 9px;
+        }
 
-        /* --- 6. BACKGROUND EFFECTS --- */
+        .hamburger span:nth-child(3) {
+            top: 18px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            top: 9px;
+            transform: rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            left: -60px;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            top: 9px;
+            transform: rotate(-45deg);
+        }
+
+        /* Smooth scrolling for the entire page */
+        html {
+            scroll-behavior: smooth;
+            scrollbar-gutter: stable;
+        }
+
+        /* Prevent body scroll when sidebar is open */
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        /* --- Moving Background Effect --- */
         .moving-bg {
             position: fixed;
             top: 0;
@@ -207,22 +312,174 @@
             width: 100%;
             height: 100%;
             z-index: -20;
+            pointer-events: none;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(240, 171, 252, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, rgba(52, 211, 153, 0.1) 0%, transparent 50%);
+            animation: gradient-xy 20s ease infinite;
+            background-size: 400% 400%;
         }
 
-        .scroll-progress {
-            position: fixed;
+        .moving-bg::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
-            width: 0%;
-            height: 3px;
-            background: linear-gradient(90deg, #38bdf8, #c084fc);
-            z-index: 10001;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, 
+                    transparent 30%, 
+                    rgba(56, 189, 248, 0.05) 50%, 
+                    transparent 70%);
+            animation: gradient-x 25s linear infinite;
         }
 
-        /* --- 7. SCROLL ANIMATIONS --- */
+        /* --- Glitch Effect --- */
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .glitch-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+            display: none;
+        }
+
+        .red-layer {
+            color: #ff0055;
+            z-index: -1;
+            animation: glitch-anim-1 0.4s infinite linear alternate-reverse;
+        }
+
+        .blue-layer {
+            color: #00ddff;
+            z-index: -2;
+            animation: glitch-anim-2 0.4s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(10% 0 60% 0); transform: translate(-1px, 1px); }
+            100% { clip-path: inset(30% 0 30% 0); transform: translate(1px, -1px); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); }
+            20% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(30% 0 20% 0); transform: translate(2px, 1px); }
+            60% { clip-path: inset(10% 0 80% 0); transform: translate(-2px, -2px); }
+            80% { clip-path: inset(50% 0 30% 0); transform: translate(1px, 2px); }
+            100% { clip-path: inset(70% 0 10% 0); transform: translate(-1px, -1px); }
+        }
+
+        /* --- Glassmorphism Card --- */
+        .glass-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 20px rgba(56, 189, 248, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        .icon-box {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                inset 0 0 20px rgba(0,0,0,0.5),
+                0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Text Gradients --- */
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: gradient-flow 5s ease infinite;
+        }
+        
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Button Glow --- */
+        .glow-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .glow-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, transparent 60%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .glow-btn:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        /* Enhanced Fade Animations with Re-trigger */
         .fade-in-scroll {
             opacity: 0;
             transform: translateY(40px);
@@ -234,96 +491,60 @@
             transform: translateY(0);
         }
 
-        /* --- 8. UTILITY --- */
-        .text-gradient {
-            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
+        /* Different animation styles */
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        section {
-            height: 80vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 20px;
-            text-align: center;
+        .fade-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .fade-in-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Scale animation */
+        .fade-in-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Staggered delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+
+        /* Progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            z-index: 100;
+            transition: width 0.3s ease;
         }
     </style>
-</head>
-<body>
-
-    <div class="scroll-progress" id="progressBar"></div>
-    <div class="moving-bg"></div>
-
-    <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-
-    <div class="mobile-sidebar-overlay" id="overlay"></div>
-    <nav class="mobile-sidebar" id="sidebar">
-        <div style="display: flex; flex-direction: column; gap: 20px;">
-            <a href="#" style="color: white; text-decoration: none; font-size: 1.5rem;">Home</a>
-            <a href="#" style="color: white; text-decoration: none; font-size: 1.5rem;">Services</a>
-            <a href="#" style="color: white; text-decoration: none; font-size: 1.5rem;">Portfolio</a>
-        </div>
-    </nav>
-
-    <main>
-        <section>
-            <h1 class="text-gradient" style="font-size: 4rem;">ECLIPSIA</h1>
-            <p class="fade-in-scroll">Modern Solutions for the Digital Age.</p>
-        </section>
-
-        <section class="fade-in-scroll">
-            <div style="padding: 40px; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; background: rgba(255,255,255,0.02);">
-                <h2>Responsive & Secure</h2>
-                <p>Designed with horizontal overflow protection.</p>
-            </div>
-        </section>
-    </main>
-
-    <script>
-        // 1. Hamburger Toggle Logic
-        const hamburger = document.getElementById('hamburger');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const body = document.body;
-
-        function toggleMenu() {
-            hamburger.classList.toggle('active');
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-            body.classList.toggle('no-scroll');
-        }
-
-        hamburger.addEventListener('click', toggleMenu);
-        overlay.addEventListener('click', toggleMenu);
-
-        // 2. Scroll Progress Bar
-        window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('progressBar').style.width = scrolled + "%";
-        });
-
-        // 3. Intersection Observer for Fade-in animations
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in-scroll').forEach(el => observer.observe(el));
-    </script>
 </head>
 <body class="antialiased selection:bg-brand-500 selection:text-white">
 
