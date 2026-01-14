@@ -327,41 +327,44 @@
         }
 
         /* --- Product Image --- */
-        .product-image {
-            width: 600px;
-            height: 350px;
-            border: 2px solid rgba(56, 189, 248, 0.3);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(139, 92, 246, 0.1));
-        }
+        /* --- Product Image --- */
+.product-image {
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 16 / 9;
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(139, 92, 246, 0.1));
+    margin: 0 auto;
+}
 
-        .product-img {
-             width: 600px;
-            height: 350px;
-            border: 2px solid rgba(56, 189, 248, 0.3);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(139, 92, 246, 0.1));
-        }
+.product-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(139, 92, 246, 0.1));
+}
 
-        .glass-card:hover .product-image {
-            border-color: rgba(56, 189, 248, 0.6);
-            transform: scale(1);
-            box-shadow: 0 12px 35px rgba(56, 189, 248, 0.4);
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(139, 92, 246, 0.15));
-        }
+.glass-card:hover .product-image {
+    border-color: rgba(56, 189, 248, 0.6);
+    transform: scale(1);
+    box-shadow: 0 12px 35px rgba(56, 189, 248, 0.4);
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(139, 92, 246, 0.15));
+}
 
-        .glass-card:hover .product-img {
-            transform: scale(1.1);
-        }
-
+.glass-card:hover .product-img {
+    transform: scale(1.1);
+}
         /* --- APK Download Button --- */
         .apk-download-btn {
             display: inline-flex;
@@ -984,4 +987,5 @@
         });
     </script>
 </body>
+
 </html>
