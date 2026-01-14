@@ -85,8 +85,6 @@
             color: white;
             overflow-x: hidden;
             min-height: 100vh;
-            width: 100%;
-            max-width: 100vw;
         }
 
         /* --- Premium Scrollbar Design --- */
@@ -190,9 +188,6 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             overflow: hidden;
             position: relative;
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
         }
 
         .glass-card::before {
@@ -224,57 +219,28 @@
             left: 100%;
         }
 
-        /* --- Enhanced Fade Animations with Re-trigger --- */
-        .fade-in-scroll {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        /* --- Back Button Style (from APK section) --- */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
-        .fade-in-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
-
-        .fade-in-left {
-            opacity: 0;
-            transform: translateX(-40px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .fade-in-left.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .fade-in-right {
-            opacity: 0;
-            transform: translateX(40px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .fade-in-right.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .fade-in-scale {
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .fade-in-scale.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* Staggered delays */
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
-        .delay-400 { transition-delay: 400ms; }
-        .delay-500 { transition-delay: 500ms; }
 
         /* --- Text Gradients --- */
         .text-gradient {
@@ -314,29 +280,6 @@
         
         .glow-btn:hover::after {
             transform: translate(-50%, -50%) scale(1);
-        }
-
-        /* --- Tech Item Styles --- */
-        .tech-item {
-            background: rgba(56, 189, 248, 0.1);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            border-radius: 8px;
-            padding: 12px 8px;
-            text-align: center;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            word-break: break-word;
-        }
-
-        .tech-item:hover {
-            background: rgba(56, 189, 248, 0.2);
-            border-color: rgba(56, 189, 248, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.2);
         }
 
         /* --- Service Card Styles --- */
@@ -381,33 +324,9 @@
             border-radius: 15px;
             font-size: 0.8rem;
             border: 1px solid rgba(59, 130, 246, 0.3);
-            white-space: nowrap;
         }
 
-        /* --- Back Button Style --- */
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.875rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* Progress bar */
+        /* --- Progress bar --- */
         .scroll-progress {
             position: fixed;
             top: 0;
@@ -419,214 +338,54 @@
             transition: width 0.3s ease;
         }
 
-        @keyframes pulse-ai {
+        /* AI Pulse Animation */
+        @keyframes ai-pulse {
             0%, 100% { 
-                box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); 
+                box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); 
             }
             50% { 
-                box-shadow: 0 0 30px 10px rgba(56, 189, 248, 0.3); 
+                box-shadow: 0 0 30px 10px rgba(139, 92, 246, 0.3); 
             }
         }
 
         .ai-pulse {
-            animation: pulse-ai 2s ease-in-out infinite;
+            animation: ai-pulse 2s ease-in-out infinite;
         }
 
-        /* --- RESPONSIVE FIXES --- */
-        
-        /* Prevent horizontal overflow */
-        html {
-            overflow-x: hidden;
-            max-width: 100%;
+        /* AI Specific Gradients */
+        .ai-gradient {
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: gradient-flow 4s ease infinite;
         }
 
-        section, .container, .grid {
-            width: 100%;
-            max-width: 100%;
-            overflow-x: hidden;
-            box-sizing: border-box;
+        .ai-bg-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
         }
 
-        /* Tech items grid responsive */
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
+        /* Tech Chip Styles */
+        .tech-chip {
+            background: rgba(139, 92, 246, 0.1);
+            color: #a78bfa;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
         }
 
-        /* --- RESPONSIVE STATS CONTAINER FIXES (For pages with stats cards) --- */
-        .stats-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1.5rem;
-            width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 0 1rem;
-            box-sizing: border-box;
+        .tech-chip:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: scale(1.05);
         }
 
-        .stat-card {
-            flex: 1 1 calc(50% - 1.5rem);
-            min-width: 0;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        /* Extra small devices (phones, less than 480px) */
-        @media (max-width: 480px) {
-            .stats-container {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 0 0.5rem;
-            }
-            
-            .stat-card {
-                flex: 1 1 100%;
-                width: 100%;
-                max-width: 100%;
-                min-width: 0;
-            }
-            
-            .tech-grid {
-                grid-template-columns: repeat(1, 1fr);
-                gap: 0.5rem;
-            }
-            
-            .tech-item {
-                padding: 10px 6px;
-                font-size: 0.875rem;
-            }
-            
-            .tech-item i {
-                font-size: 1.25rem;
-                margin-bottom: 0.5rem;
-            }
-            
-            /* Service features responsive */
-            .service-features {
-                justify-content: center;
-            }
-            
-            .service-features span {
-                font-size: 0.75rem;
-                padding: 0.2rem 0.5rem;
-                white-space: normal;
-                word-break: break-word;
-                text-align: center;
-            }
-            
-            /* Hero section responsive */
-            .text-4xl, .text-5xl, .text-6xl {
-                font-size: 2rem !important;
-                line-height: 1.2;
-                word-break: break-word;
-            }
-            
-            /* Grid layouts */
-            .grid.grid-cols-2,
-            .grid.md\:grid-cols-2,
-            .grid.lg\:grid-cols-2 {
-                grid-template-columns: 1fr !important;
-                gap: 1rem;
-            }
-            
-            /* Benefits section responsive */
-            .grid.md\:grid-cols-3 {
-                grid-template-columns: 1fr !important;
-                gap: 1rem;
-            }
-            
-            /* Prevent any element from causing overflow */
-            * {
-                max-width: 100vw;
-            }
-        }
-
-        @media (max-width: 767px) {
-            .tech-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.75rem;
-            }
-            
-            .service-features {
-                justify-content: flex-start;
-            }
-            
-            /* Padding adjustments */
-            section {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-            
-            .glass-card {
-                padding: 1.5rem;
-            }
-            
-            .stat-card {
-                flex: 1 1 calc(50% - 1rem);
-            }
-        }
-
-        /* Medium devices (landscape tablets, 768px and up) */
-        @media (min-width: 768px) {
-            .stat-card {
-                flex: 1 1 calc(25% - 1.5rem);
-                max-width: calc(25% - 1.5rem);
-            }
-        }
-
-        /* Ensure all text wraps properly */
-        h1, h2, h3, h4, h5, h6, p, span, div {
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            max-width: 100%;
-        }
-
-        /* Fix for long feature tags */
-        @media (max-width: 767px) {
-            .service-features span {
-                white-space: normal;
-                word-break: break-word;
-                text-align: center;
-            }
-        }
-
-        /* Benefits section responsive */
-        @media (max-width: 640px) {
-            .grid.md\:grid-cols-3 {
-                grid-template-columns: 1fr !important;
-                gap: 1rem;
-            }
-        }
-
-        /* CTA buttons responsive */
-        .cta-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            width: 100%;
-        }
-
-        @media (min-width: 640px) {
-            .cta-buttons {
-                flex-direction: row;
-            }
-        }
-
-        /* Prevent any horizontal scrolling */
-        body, html {
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* Fix for any hidden overflow */
-        .overflow-hidden {
-            overflow: hidden !important;
+        /* Floating Animation */
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
         }
     </style>
 </head>
@@ -650,8 +409,8 @@
                     <a href="index.html" class="text-xl font-bold tracking-tighter text-white hover:text-brand-400 transition-colors">ECLIPSIA<span class="text-brand-400">.</span></a>
                 </div>
                 
-                <!-- Back Button -->
-                <a href="index.html#services" class="back-btn fade-in-right">
+                <!-- Back Button - From APK section -->
+                <a href="main.html#services" class="back-btn">
                     <i class="fas fa-arrow-left"></i>
                     <span>Back to Services</span>
                 </a>
@@ -661,222 +420,254 @@
 
     <!-- AI Solutions Content -->
     <section class="py-20 px-4 pt-32">
-        <div class="max-w-6xl mx-auto">
+        <div class="max-w-7xl mx-auto">
             <!-- Hero Section -->
-            <div class="text-center mb-16 fade-in-scroll">
+            <div class="text-center mb-16">
                 <div class="relative inline-block mb-8">
-                    <i class="fas fa-brain text-6xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 ai-pulse"></i>
+                    <i class="fas fa-brain text-6xl md:text-8xl ai-gradient ai-pulse"></i>
                 </div>
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-green-400">
-                        AI & Automation Solutions
+                    <span class="ai-gradient">
+                        AI SOLUTIONS
                     </span>
                 </h1>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto fade-in-scroll delay-200">
-                    Transform your business with intelligent automation and cutting-edge AI solutions powered by machine learning.
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Transform your business with cutting-edge artificial intelligence and automation solutions.
                 </p>
-            </div>
-
-            <!-- Main Content -->
-            <div class="grid lg:grid-cols-2 gap-8 items-center mb-16">
-                <div class="fade-in-left">
-                    <div class="glass-card rounded-2xl p-6">
-                        <h2 class="text-3xl md:text-4xl font-black mb-6">Intelligent Automation</h2>
-                        <p class="text-lg text-gray-300 mb-6 leading-relaxed">
-                            Our AI solutions leverage advanced machine learning algorithms and neural networks to automate complex processes, 
-                            reduce operational costs, and drive business growth through intelligent, data-driven decision-making.
-                        </p>
-                        <div class="space-y-4">
-                            <div class="flex items-center space-x-3 p-3 hover:bg-gray-700/30 rounded-lg transition-colors duration-300">
-                                <i class="fas fa-brain text-blue-400 text-xl"></i>
-                                <span class="text-white font-semibold">Advanced Machine Learning Models</span>
-                            </div>
-                            <div class="flex items-center space-x-3 p-3 hover:bg-gray-700/30 rounded-lg transition-colors duration-300">
-                                <i class="fas fa-cogs text-green-400 text-xl"></i>
-                                <span class="text-white font-semibold">End-to-End Process Automation</span>
-                            </div>
-                            <div class="flex items-center space-x-3 p-3 hover:bg-gray-700/30 rounded-lg transition-colors duration-300">
-                                <i class="fas fa-chart-line text-purple-400 text-xl"></i>
-                                <span class="text-white font-semibold">Real-time Predictive Analytics</span>
-                            </div>
-                            <div class="flex items-center space-x-3 p-3 hover:bg-gray-700/30 rounded-lg transition-colors duration-300">
-                                <i class="fas fa-robot text-pink-400 text-xl"></i>
-                                <span class="text-white font-semibold">Intelligent Chatbot Systems</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 
-                <div class="fade-in-right delay-200">
-                    <div class="glass-card p-6">
-                        <h3 class="text-2xl font-bold mb-6 text-white">Our AI Capabilities</h3>
-                        <div class="tech-grid">
-                            <div class="tech-item fade-in-scale delay-100">
-                                <i class="fas fa-language text-blue-400 mb-2 text-lg"></i>
-                                <div class="text-sm">Natural Language Processing</div>
-                            </div>
-                            <div class="tech-item fade-in-scale delay-200">
-                                <i class="fas fa-eye text-green-400 mb-2 text-lg"></i>
-                                <div class="text-sm">Computer Vision</div>
-                            </div>
-                            <div class="tech-item fade-in-scale delay-300">
-                                <i class="fas fa-network-wired text-purple-400 mb-2 text-lg"></i>
-                                <div class="text-sm">Neural Networks</div>
-                            </div>
-                            <div class="tech-item fade-in-scale delay-400">
-                                <i class="fas fa-layer-group text-pink-400 mb-2 text-lg"></i>
-                                <div class="text-sm">Deep Learning</div>
-                            </div>
-                            <div class="tech-item fade-in-scale delay-500">
-                                <i class="fas fa-chart-bar text-yellow-400 mb-2 text-lg"></i>
-                                <div class="text-sm">Predictive Analytics</div>
-                            </div>
-                            <div class="tech-item fade-in-scale delay-600">
-                                <i class="fas fa-comments text-red-400 mb-2 text-lg"></i>
-                                <div class="text-sm">AI Chatbots</div>
-                            </div>
+                <!-- Stats -->
+                <div class="flex flex-wrap justify-center gap-6 mt-12">
+                    <div class="tech-chip">
+                        <i class="fas fa-bolt text-yellow-400 mr-2"></i>
+                        <span>Real-time Processing</span>
+                    </div>
+                    <div class="tech-chip">
+                        <i class="fas fa-shield-alt text-green-400 mr-2"></i>
+                        <span>Secure & Scalable</span>
+                    </div>
+                    <div class="tech-chip">
+                        <i class="fas fa-chart-line text-purple-400 mr-2"></i>
+                        <span>Data-Driven Insights</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overview Section -->
+            <div class="glass-card p-8 mb-16">
+                <h2 class="text-3xl font-bold mb-6 ai-gradient">Revolutionize Your Business</h2>
+                <p class="text-gray-300 mb-6 leading-relaxed">
+                    Our AI solutions leverage state-of-the-art machine learning algorithms and neural networks to automate complex processes, 
+                    enhance decision-making, and drive unprecedented growth. From predictive analytics to intelligent automation, 
+                    we deliver solutions that adapt and evolve with your business needs.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                            <span class="font-semibold text-gray-300">60% Reduction in Operational Costs</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                            <span class="font-semibold text-gray-300">24/7 Intelligent Automation</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                            <span class="font-semibold text-gray-300">Real-time Decision Support</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                            <span class="font-semibold text-gray-300">Scalable AI Infrastructure</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                            <span class="font-semibold text-gray-300">Predictive Analytics</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                            <span class="font-semibold text-gray-300">Custom ML Models</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- AI Services -->
-            <div class="grid md:grid-cols-2 gap-6 mb-16">
-                <div class="glass-card p-6 fade-in-left delay-300">
-                    <div class="service-icon">
-                        <i class="fas fa-robot"></i>
+            <!-- Services Grid -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-12 ai-gradient">Our AI Services</h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Service 1 -->
+                    <div class="glass-card p-8 group">
+                        <div class="service-icon text-center">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="service-title text-center">AI Consulting</h3>
+                        <p class="service-description text-center">
+                            Strategic AI implementation roadmap development and opportunity assessment.
+                        </p>
+                        <div class="service-features justify-center">
+                            <span>Strategy</span>
+                            <span>Planning</span>
+                            <span>ROI Analysis</span>
+                        </div>
                     </div>
-                    <h3 class="service-title">AI Consulting & Strategy</h3>
-                    <p class="service-description">
-                        Strategic AI implementation guidance to identify opportunities, develop customized AI roadmaps, and ensure successful integration into your business processes.
-                    </p>
-                    <div class="service-features">
-                        <span>Strategy Development</span>
-                        <span>Use Case Identification</span>
-                        <span>ROI Analysis</span>
-                        <span>Implementation Planning</span>
-                    </div>
-                    <a href="index.html#contact" class="glow-btn mt-6 group relative px-6 py-3 bg-blue-400 text-white rounded-full font-semibold text-sm hover:bg-blue-500 transition-all w-full text-center">
-                        <span>Start AI Consultation</span>
-                        <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
-                    </a>
-                </div>
 
-                <div class="glass-card p-6 fade-in-right delay-400">
-                    <div class="service-icon">
-                        <i class="fas fa-cogs"></i>
+                    <!-- Service 2 -->
+                    <div class="glass-card p-8 group">
+                        <div class="service-icon text-center">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3 class="service-title text-center">Process Automation</h3>
+                        <p class="service-description text-center">
+                            End-to-end automation of business processes using intelligent algorithms.
+                        </p>
+                        <div class="service-features justify-center">
+                            <span>RPA</span>
+                            <span>Workflows</span>
+                            <span>Integration</span>
+                        </div>
                     </div>
-                    <h3 class="service-title">Process Automation Solutions</h3>
-                    <p class="service-description">
-                        Automate repetitive tasks, streamline workflows, and integrate systems to increase efficiency, reduce human error, and optimize operations across your organization.
-                    </p>
-                    <div class="service-features">
-                        <span>Workflow Automation</span>
-                        <span>RPA Implementation</span>
-                        <span>System Integration</span>
-                        <span>Process Optimization</span>
+
+                    <!-- Service 3 -->
+                    <div class="glass-card p-8 group">
+                        <div class="service-icon text-center">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="service-title text-center">Machine Learning</h3>
+                        <p class="service-description text-center">
+                            Custom ML model development, training, and deployment for your specific needs.
+                        </p>
+                        <div class="service-features justify-center">
+                            <span>Models</span>
+                            <span>Training</span>
+                            <span>Deployment</span>
+                        </div>
                     </div>
-                    <a href="index.html#contact" class="glow-btn mt-6 group relative px-6 py-3 bg-purple-400 text-white rounded-full font-semibold text-sm hover:bg-purple-500 transition-all w-full text-center">
-                        <span>Automate Processes</span>
-                        <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
-                    </a>
+
+                    <!-- Service 4 -->
+                    <div class="glass-card p-8 group">
+                        <div class="service-icon text-center">
+                            <i class="fas fa-chart-network"></i>
+                        </div>
+                        <h3 class="service-title text-center">AI Integration</h3>
+                        <p class="service-description text-center">
+                            Seamless integration of AI capabilities into existing systems and infrastructure.
+                        </p>
+                        <div class="service-features justify-center">
+                            <span>APIs</span>
+                            <span>Cloud</span>
+                            <span>Legacy Systems</span>
+                        </div>
+                    </div>
+
+                    <!-- Service 5 -->
+                    <div class="glass-card p-8 group">
+                        <div class="service-icon text-center">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 class="service-title text-center">AI Chatbots</h3>
+                        <p class="service-description text-center">
+                            Intelligent conversational AI for customer support and engagement.
+                        </p>
+                        <div class="service-features justify-center">
+                            <span>NLP</span>
+                            <span>24/7 Support</span>
+                            <span>Multi-language</span>
+                        </div>
+                    </div>
+
+                    <!-- Service 6 -->
+                    <div class="glass-card p-8 group">
+                        <div class="service-icon text-center">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3 class="service-title text-center">Computer Vision</h3>
+                        <p class="service-description text-center">
+                            Advanced image and video analysis for various business applications.
+                        </p>
+                        <div class="service-features justify-center">
+                            <span>Image Analysis</span>
+                            <span>Object Detection</span>
+                            <span>Video Processing</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Additional AI Services -->
-            <div class="grid md:grid-cols-2 gap-6 mb-16">
-                <div class="glass-card p-6 fade-in-left delay-400">
-                    <div class="service-icon">
-                        <i class="fas fa-brain"></i>
+            <!-- Technology Stack -->
+            <div class="glass-card p-8 mb-16">
+                <h2 class="text-3xl font-bold mb-6 ai-gradient">Technology Stack</h2>
+                <p class="text-gray-300 mb-8">
+                    We utilize the latest technologies and frameworks to deliver robust AI solutions:
+                </p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="text-center p-6">
+                        <i class="fas fa-code text-4xl text-blue-400 mb-4"></i>
+                        <div class="font-semibold text-white">TensorFlow</div>
+                        <div class="text-sm text-gray-400 mt-2">ML Framework</div>
                     </div>
-                    <h3 class="service-title">Machine Learning Development</h3>
-                    <p class="service-description">
-                        Custom ML model development, training, and deployment for predictive analytics, pattern recognition, and intelligent decision-making systems.
-                    </p>
-                    <div class="service-features">
-                        <span>Model Development</span>
-                        <span>Data Training</span>
-                        <span>Model Optimization</span>
-                        <span>Production Deployment</span>
+                    
+                    <div class="text-center p-6">
+                        <i class="fab fa-python text-4xl text-green-400 mb-4"></i>
+                        <div class="font-semibold text-white">Python</div>
+                        <div class="text-sm text-gray-400 mt-2">Development</div>
                     </div>
-                </div>
-
-                <div class="glass-card p-6 fade-in-right delay-500">
-                    <div class="service-icon">
-                        <i class="fas fa-chart-network"></i>
+                    
+                    <div class="text-center p-6">
+                        <i class="fas fa-cloud text-4xl text-purple-400 mb-4"></i>
+                        <div class="font-semibold text-white">AWS/Azure</div>
+                        <div class="text-sm text-gray-400 mt-2">Cloud AI</div>
                     </div>
-                    <h3 class="service-title">AI Integration Services</h3>
-                    <p class="service-description">
-                        Seamless integration of AI capabilities into your existing systems and infrastructure, ensuring compatibility and maximizing value.
-                    </p>
-                    <div class="service-features">
-                        <span>API Integration</span>
-                        <span>Legacy System Modernization</span>
-                        <span>Cloud AI Services</span>
-                        <span>Continuous Support</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Benefits Section -->
-            <div class="mb-16 fade-in-scroll delay-300">
-                <div class="glass-card p-6">
-                    <h3 class="text-2xl font-bold mb-6 text-white">Benefits of Our AI Solutions</h3>
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <div class="text-center p-4">
-                            <div class="text-3xl text-blue-400 mb-4">
-                                <i class="fas fa-tachometer-alt"></i>
-                            </div>
-                            <h4 class="text-lg font-bold text-white mb-2">Increased Efficiency</h4>
-                            <p class="text-gray-300 text-sm">Automate tasks to save time and resources</p>
-                        </div>
-                        <div class="text-center p-4">
-                            <div class="text-3xl text-green-400 mb-4">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                            <h4 class="text-lg font-bold text-white mb-2">Data-Driven Insights</h4>
-                            <p class="text-gray-300 text-sm">Make better decisions with predictive analytics</p>
-                        </div>
-                        <div class="text-center p-4">
-                            <div class="text-3xl text-purple-400 mb-4">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <h4 class="text-lg font-bold text-white mb-2">Scalable Solutions</h4>
-                            <p class="text-gray-300 text-sm">Grow with AI systems that scale with your business</p>
-                        </div>
+                    
+                    <div class="text-center p-6">
+                        <i class="fas fa-database text-4xl text-yellow-400 mb-4"></i>
+                        <div class="font-semibold text-white">Big Data</div>
+                        <div class="text-sm text-gray-400 mt-2">Data Processing</div>
                     </div>
                 </div>
             </div>
 
             <!-- CTA Section -->
-            <div class="text-center fade-in-scale delay-600">
-                <div class="glass-card p-6 ai-pulse">
-                    <h2 class="text-3xl font-black mb-6">Ready to Transform Your Business with AI?</h2>
+            <div class="text-center mb-16">
+                <div class="glass-card p-12 ai-pulse">
+                    <h2 class="text-3xl font-bold mb-6 ai-gradient">Ready to Transform Your Business?</h2>
                     <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-                        Let's discuss how our cutting-edge AI solutions can drive innovation, efficiency, and growth for your organization.
+                        Let's discuss how our AI solutions can drive innovation and growth for your organization.
                     </p>
-                    <div class="cta-buttons">
-                        <a href="index.html#contact" class="glow-btn group relative px-6 py-3 bg-white text-black rounded-full font-bold text-base hover:bg-gray-100 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] w-full sm:w-auto text-center">
-                            <span>Get Started with AI</span>
-                            <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="mailto:eclipsiatechs@gmail.com" 
+                           class="glow-btn px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2">
+                            <i class="fas fa-rocket"></i>
+                            <span>Start AI Journey</span>
                         </a>
-                        <a href="mailto:eclipsiatechs@gmail.com" class="px-6 py-3 rounded-full border border-blue-400 text-blue-400 font-medium hover:bg-blue-400/10 transition-all w-full sm:w-auto text-center">
-                            <i class="fas fa-envelope mr-2"></i>
-                            <span>Email Us</span>
+                        
+                        <a href="tel:+234XXX-XXX-XXXX"
+                           class="px-8 py-4 rounded-full border border-gray-600 text-gray-300 font-semibold hover:border-brand-400 hover:text-brand-400 transition-all flex items-center justify-center gap-2">
+                            <i class="fas fa-phone"></i>
+                            <span>Schedule Call</span>
                         </a>
                     </div>
+                    
+                    <p class="text-sm text-gray-400 mt-6">
+                        Get response within 24 hours • Free initial consultation • No commitment required
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-dark-900 border-t border-gray-800 py-12 px-4 fade-in-scroll delay-700">
+    <!-- Footer (from APK section) -->
+    <footer class="bg-dark-900 border-t border-gray-800 py-12 px-4">
         <div class="max-w-7xl mx-auto">
             <div class="text-center">
                 <div class="text-2xl font-bold tracking-tighter text-white mb-4">ECLIPSIA<span class="text-brand-400">.</span></div>
                 <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
-                    Transforming businesses with intelligent AI solutions and cutting-edge technology.
+                    Innovating the future with smart AI solutions and premium digital experiences.
                 </p>
                 <div class="flex justify-center space-x-6 mb-6">
                     <a href="https://www.tiktok.com/@eclipsia_techs?_t=ZT-90qyL9beSYn&_r=1" class="text-gray-400 hover:text-[#ff0050] transition-colors duration-300">
@@ -943,7 +734,7 @@
 
             material = new THREE.PointsMaterial({
                 size: 2.5,
-                color: 0x38bdf8,
+                color: 0x8b5cf6, // Purple color for AI theme
                 map: sprite,
                 transparent: true,
                 opacity: 0.4,
@@ -988,47 +779,6 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
-        // --- Enhanced Scroll Animations (Re-trigger on scroll up/down) ---
-        let scrollElements = [];
-        let ticking = false;
-
-        function initScrollAnimations() {
-            scrollElements = Array.from(document.querySelectorAll('.fade-in-scroll, .fade-in-left, .fade-in-right, .fade-in-scale'));
-            
-            // Initial check on load
-            checkElements();
-            
-            // Set up scroll listener
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    window.requestAnimationFrame(() => {
-                        checkElements();
-                        updateScrollProgress();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            });
-            
-            window.addEventListener('resize', checkElements);
-        }
-
-        function checkElements() {
-            const windowHeight = window.innerHeight;
-            const triggerPoint = windowHeight * 0.85;
-            
-            scrollElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                
-                // Re-trigger animation when element comes back into view
-                if (elementTop < triggerPoint) {
-                    element.classList.add('visible');
-                } else {
-                    element.classList.remove('visible');
-                }
-            });
-        }
-
         // --- Scroll Progress Bar ---
         function updateScrollProgress() {
             const progressBar = document.querySelector('.scroll-progress');
@@ -1050,6 +800,7 @@
                     scrollToTopButton.classList.remove('opacity-100', 'translate-y-0');
                     scrollToTopButton.classList.add('opacity-0', 'translate-y-10');
                 }
+                updateScrollProgress();
             });
 
             scrollToTopButton.addEventListener('click', () => {
@@ -1077,29 +828,21 @@
         // --- Initialize Everything ---
         document.addEventListener('DOMContentLoaded', () => {
             initParticles();
-            initScrollAnimations();
-            
-            // Add smooth reveal for initial load
-            setTimeout(() => {
-                document.querySelectorAll('.fade-in-scroll, .fade-in-left, .fade-in-right, .fade-in-scale').forEach((el, index) => {
-                    setTimeout(() => {
-                        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
-                            el.classList.add('visible');
-                        }
-                    }, index * 50);
-                });
-            }, 100);
+            updateScrollProgress();
         });
 
-        // --- AI Theme Enhancements ---
+        // --- Hover Effects for Service Cards ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Add AI-themed cursor effect on tech items
-            document.querySelectorAll('.tech-item').forEach(item => {
-                item.addEventListener('mouseenter', () => {
-                    item.style.transform = 'translateY(-3px) scale(1.05)';
+            const serviceCards = document.querySelectorAll('.glass-card');
+            serviceCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-12px)';
+                    card.style.borderColor = 'rgba(139, 92, 246, 0.4)';
                 });
-                item.addEventListener('mouseleave', () => {
-                    item.style.transform = 'translateY(0) scale(1)';
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.borderColor = 'rgba(255, 255, 255, 0.08)';
                 });
             });
         });
