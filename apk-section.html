@@ -12,7 +12,6 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     
     <script>
         // Your Firebase Configuration
@@ -557,6 +556,11 @@
             cursor: pointer;
             color: #ff6b6b;
             font-size: 0.9rem;
+            margin-left: 5px;
+        }
+
+        .tag-remove:hover {
+            color: #ff4444;
         }
 
         .admin-buttons {
@@ -778,7 +782,7 @@
                 <img id="imagePreview" class="preview-image" alt="Image Preview">
             </div>
             <div class="form-group">
-                <label>Feature Tags</label>
+                <label>Feature Tags (Add 2-3 tags)</label>
                 <div class="flex gap-2 mb-2">
                     <input type="text" id="tagInput" class="form-input tag-input" placeholder="Add a tag (e.g., Pro Unlocked)">
                     <button id="addTagButton" class="px-4 bg-brand-500 text-white rounded-lg hover:bg-brand-600 transition-colors">
@@ -786,6 +790,7 @@
                     </button>
                 </div>
                 <div id="tagsContainer" class="tags-container"></div>
+                <p class="text-xs text-gray-400 mt-1">Click the X on a tag to remove it</p>
             </div>
             <div class="form-group">
                 <label for="downloadUrl">Download URL *</label>
@@ -828,11 +833,10 @@
     <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-dark-900/90 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <!-- Logo with Double-Click Event -->
+                <!-- Logo with Double-Click Event (Hidden from public) -->
                 <div class="flex-shrink-0 cursor-pointer" id="logoAdmin">
                     <div class="text-xl font-bold tracking-tighter text-white hover:text-brand-400 transition-colors">
                         ECLIPSIA<span class="text-brand-400">.</span>
-                        <span class="text-xs text-gray-400 block mt-1">Double-click for admin</span>
                     </div>
                 </div>
                 
@@ -1184,8 +1188,6 @@
             const email = document.getElementById('adminEmail').value.trim();
             const password = document.getElementById('adminPassword').value.trim();
             
-            console.log("Attempting login with:", email, password);
-            
             // Hardcoded admin credentials check
             if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
                 isAdmin = true;
@@ -1222,9 +1224,15 @@
             const tag = tagInput.value.trim();
             
             if (tag && tags.length < 5) {
+                if (tag.length > 20) {
+                    showNotification("Tag is too long (max 20 characters)", "error");
+                    return;
+                }
                 tags.push(tag);
                 renderTags();
                 tagInput.value = '';
+            } else if (tags.length >= 5) {
+                showNotification("Maximum 5 tags allowed", "error");
             }
         }
 
@@ -1273,7 +1281,7 @@
 
         // --- Event Listeners Setup ---
         function setupEventListeners() {
-            // Logo double-click for admin
+            // Logo double-click for admin (hidden feature)
             document.getElementById('logoAdmin').addEventListener('dblclick', showLoginModal);
             
             // Login button
@@ -1288,16 +1296,26 @@
             // Image URL preview
             document.getElementById('imageUrl').addEventListener('input', previewImageFromUrl);
             
-            // Tag input
-            document.getElementById('addTagButton').addEventListener('click', addTag);
-            document.getElementById('tagInput').addEventListener('keypress', addTagOnEnter);
+            // Tag input - FIXED: Proper event listener
+            document.getElementById('addTagButton').addEventListener('click', function(e) {
+                e.preventDefault();
+                addTag();
+            });
+            
+            document.getElementById('tagInput').addEventListener('keypress', function(e) {
+                addTagOnEnter(e);
+            });
             
             // Upload app button
-            document.getElementById('uploadAppButton').addEventListener('click', uploadApp);
+            document.getElementById('uploadAppButton').addEventListener('click', function(e) {
+                e.preventDefault();
+                uploadApp();
+            });
             
             // Enter key in login form
             document.getElementById('adminPassword').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
+                    e.preventDefault();
                     attemptLogin();
                 }
             });
@@ -1518,3 +1536,4 @@
     </script>
 </body>
 </html>
+
