@@ -1180,10 +1180,27 @@
                                       placeholder="Tell us about your project..."></textarea>
                             <div id="message-error" class="text-red-400 text-sm mt-1 hidden">Please enter your message</div>
                         </div>
-                        <button type="submit" class="glow-btn w-full justify-center group relative px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:bg-gray-100 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]">
-                            <span>Send Message</span>
-                            <i class="fas fa-paper-plane ml-2 transition-transform group-hover:translate-x-1"></i>
-                        </button>
+                       <button type="button" onclick="openWhatsApp()" class="glow-btn w-full justify-center group relative px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:bg-gray-100 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]">
+    <span>Send Message</span>
+    <i class="fas fa-paper-plane ml-2 transition-transform group-hover:translate-x-1"></i>
+</button>
+
+<script>
+function openWhatsApp() {
+    // Remove any non-digit characters and ensure proper formatting
+    const phoneNumber = '2349117564724';
+    
+    // Create WhatsApp URL (without pre-filled message)
+    const whatsappUrl = `https://wa.me/${phoneNumber}`;
+    
+    // Alternative with pre-filled message (uncomment if needed):
+    // const message = encodeURIComponent('Hello, I would like to get more information.');
+    // const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+    
+    // Open WhatsApp in a new tab
+    window.open(whatsappUrl, '_blank');
+}
+</script>
                     </form>
                 </div>
                 
@@ -1654,4 +1671,5 @@
     </script>
 </body>
 </html>
+
 
